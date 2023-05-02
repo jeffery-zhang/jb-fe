@@ -15,8 +15,12 @@ const fetcher = axios.create({
 })
 
 const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-  const token = ''
-  token && config.headers && (config.headers.Authorization = `Bearer ${token}`)
+  if (window && window.localStorage) {
+    const token = window.localStorage.getItem('token')
+    token &&
+      config.headers &&
+      (config.headers.Authorization = `Bearer ${token}`)
+  }
 
   return config
 }

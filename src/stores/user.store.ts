@@ -4,7 +4,8 @@ interface IUserStore {
   user: IUser | null
   token: string
   isLogin: boolean
-  setUser: (user: IUser, token: string) => void
+  login: (user: IUser, token: string) => void
+  logout: () => void
 }
 
 interface IUser {
@@ -18,5 +19,13 @@ export const useUserStore = create<IUserStore>((set) => ({
   user: null,
   token: '',
   isLogin: false,
-  setUser: (user, token) => set({ user, token, isLogin: true }),
+  login: (user, token) => {
+    if (!user || !token) return
+    if (window) window.localStorage.setItem('token', token)
+    set({ user, token, isLogin: true })
+  },
+  logout: () => {
+    if (window) window.localStorage.removeItem('token')
+    set({ user: null, token: '', isLogin: false })
+  },
 }))

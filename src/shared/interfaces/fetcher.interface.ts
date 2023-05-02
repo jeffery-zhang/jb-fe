@@ -22,3 +22,9 @@ export interface IRecords<T> {
   pageSize: number
   records: T[]
 }
+
+export interface IActionResponse extends IReponse {
+  data: {
+    message: string
+  }
+}
