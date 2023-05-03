@@ -21,11 +21,12 @@ export const useUserStore = create<IUserStore>((set) => ({
   isLogin: false,
   login: (user, token) => {
     if (!user || !token) return
-    if (window) window.localStorage.setItem('token', token)
+    if (typeof window !== 'undefined')
+      window.localStorage.setItem('token', token)
     set({ user, token, isLogin: true })
   },
   logout: () => {
-    if (window) window.localStorage.removeItem('token')
+    if (typeof window !== 'undefined') window.localStorage.removeItem('token')
     set({ user: null, token: '', isLogin: false })
   },
 }))

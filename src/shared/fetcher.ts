@@ -1,11 +1,11 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'antd'
-import { IReponse } from './interfaces/fetcher.interface'
+import { IResponse } from './interfaces/fetcher.interface'
 
-const prefix = '/api'
+const clientUrl = process.env.CLIENT_URL || process.env.NEXT_PUBLIC_CLIENT_URL
 
 const fetcher = axios.create({
-  baseURL: prefix,
+  baseURL: clientUrl || '',
   timeout: 10000,
   withCredentials: true,
   headers: {
@@ -15,7 +15,7 @@ const fetcher = axios.create({
 })
 
 const requestInterceptor = (config: InternalAxiosRequestConfig) => {
-  if (window && window.localStorage) {
+  if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('token')
     token &&
       config.headers &&
@@ -25,7 +25,7 @@ const requestInterceptor = (config: InternalAxiosRequestConfig) => {
   return config
 }
 
-const responseInterceptor = (response: AxiosResponse<IReponse<any>>) => {
+const responseInterceptor = (response: AxiosResponse<IResponse<any>>) => {
   const data = response.data
 
   if (!data.success) {

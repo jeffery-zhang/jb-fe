@@ -2,27 +2,34 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FC } from 'react'
 import { shallow } from 'zustand/shallow'
-import UserCircleIcon from '@heroicons/react/24/solid/UserCircleIcon'
+import { UserCircleIcon, SwatchIcon } from '@heroicons/react/24/solid'
 
 import { useUserStore } from '@/stores/user.store'
 import Doge from '../../public/doge.svg'
 
 export const Header = () => {
+  const router = useRouter()
+
   return (
-    <header className='navbar bg-base-100'>
-      <Logo className='flex-1' />
+    <header className='navbar justify-between bg-base-100'>
+      <Logo onClick={() => router.push('/')} />
       <div className='flex items-center flex-none gap-3'>
         <SearchInput />
+        <ThemeControl />
         <UserMenu />
       </div>
     </header>
   )
 }
-export const Logo: FC<{ className?: string }> = ({ className }) => {
+export const Logo: FC<{ className?: string; onClick?: () => void }> = ({
+  className,
+  onClick,
+}) => {
   return (
     <div
-      className={`font-great-vibes tracking-widest \
+      className={`font-great-vibes tracking-widest cursor-default text-primary \
       ${className}`}
+      onClick={() => onClick?.()}
     >
       <span className='text-3xl md:text-4xl'>JB</span>
       <span className='text-base'>log</span>
@@ -32,12 +39,48 @@ export const Logo: FC<{ className?: string }> = ({ className }) => {
 
 export const SearchInput = () => {
   return (
-    <div className='form-control'>
+    <div className='form-control w-32 md:w-60'>
       <input
         type='text'
         placeholder='Search'
         className='input input-bordered input-primary input-sm md:input-md w-full'
       />
+    </div>
+  )
+}
+
+export const ThemeControl = () => {
+  const handleThemeChange = (key: string) => {
+    if (typeof window !== 'undefined') {
+      window.document.querySelector('html')?.setAttribute('data-theme', key)
+      window.localStorage.setItem('theme', key)
+    }
+  }
+
+  return (
+    <div className='dropdown dropdown-end'>
+      <label
+        tabIndex={0}
+        className='btn btn-ghost btn-circle btn-sm avatar w-8 md:w-10 h-8 md:h-10'
+      >
+        <div className='w-8 md:w-10 overflow-hidden rounded-full text-primary'>
+          <SwatchIcon />
+        </div>
+      </label>
+      <ul
+        tabIndex={0}
+        className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
+      >
+        <li>
+          <a onClick={() => handleThemeChange('windter')}>Winter</a>
+        </li>
+        <li>
+          <a onClick={() => handleThemeChange('autumn')}>Autumn</a>
+        </li>
+        <li>
+          <a onClick={() => handleThemeChange('garden')}>Garden</a>
+        </li>
+      </ul>
     </div>
   )
 }
@@ -64,7 +107,7 @@ export const UserMenu = () => {
           </div>
         ) : (
           <div
-            className='w-8 md:w-10 overflow-hidden text-gray-300 hover:text-white rounded-full transition-colors'
+            className='w-8 md:w-10 overflow-hidden text-base-300 hover:text-base-100 rounded-full transition-colors'
             onClick={() => router.push('/login')}
           >
             <UserCircleIcon />

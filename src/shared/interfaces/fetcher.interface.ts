@@ -7,14 +7,14 @@ export interface ISearch {
   pageSize?: number
 }
 
-export interface IReponse<T = any> {
+export interface IResponse<T = any> {
   success: boolean
   data: T
   status: number
   message: string
 }
 
-export interface IResponseRecords<T = any> extends IReponse<IRecords<T>> {}
+export interface IResponseRecords<T = any> extends IResponse<IRecords<T>> {}
 
 export interface IRecords<T> {
   total: number
@@ -23,7 +23,7 @@ export interface IRecords<T> {
   records: T[]
 }
 
-export interface IActionResponse extends IReponse {
+export interface IActionResponse extends IResponse {
   data: {
     message: string
   }

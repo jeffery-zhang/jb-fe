@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const SERVER = process.env.API_URL
+const SERVER = process.env.SERVER_URL
 
 module.exports = () => {
   const rewrites = async () => [

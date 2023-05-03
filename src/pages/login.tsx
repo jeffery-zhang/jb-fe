@@ -48,7 +48,7 @@ export default function Login() {
     <BasicLayout>
       <div className='w-full h-full flex justify-center items-center'>
         <div
-          className={`w-full md:max-w-md 2xl:max-w-2xl mx-4 px-6 md:px-24 2xl:px-36 py-12 rounded-lg bg-white shadow-lg \
+          className={`w-full md:max-w-md 2xl:max-w-2xl mx-4 px-6 md:px-24 2xl:px-36 py-12 rounded-lg bg-base-100 shadow-lg \
           transition-all duration-1000 ease-in-out \
           ${inited ? 'translate-y-0 opacity-1' : 'translate-y-2/4 opacity-0'}`}
         >

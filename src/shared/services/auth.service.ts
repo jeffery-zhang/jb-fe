@@ -1,7 +1,8 @@
 import { fetcher } from '../fetcher'
-import { IReponse, IActionResponse } from '../interfaces/fetcher.interface'
+import { IResponse, IActionResponse } from '../interfaces/fetcher.interface'
 
-const path = {
+export const path = {
+  verify: '/auth/verify',
   login: '/auth/login',
   register: '/auth/register',
   changePwd: '/auth/changePwd',
@@ -31,15 +32,17 @@ interface ILoginResponse {
   avatar: string
 }
 
+export const verify = async (): Promise<IResponse<ILoginResponse | null>> =>
+  fetcher.get(path.verify)
 export const login = async (
   data: ILoginData,
-): Promise<IReponse<ILoginResponse>> => fetcher.post(path.login, data)
+): Promise<IResponse<ILoginResponse>> => fetcher.post(path.login, data)
 export const register = async (
   data: IRegisterData,
-): Promise<IReponse<ILoginResponse>> => fetcher.post(path.register, data)
+): Promise<IResponse<ILoginResponse>> => fetcher.post(path.register, data)
 export const changePwd = async (
   data: IChangePwdData,
-): Promise<IReponse<IActionResponse>> => fetcher.post(path.changePwd, data)
+): Promise<IResponse<IActionResponse>> => fetcher.put(path.changePwd, data)
 
 const authService = {
   login,
