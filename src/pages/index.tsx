@@ -2,12 +2,10 @@ import useSwr from 'swr'
 
 import { BasicLayout } from '@/layouts/basic.layout'
 import { Post } from '@/components/post.component'
-import { search, path, IPostData } from '@/shared/services/posts.service'
+import { search, IPostData } from '@/shared/services/posts.service'
 
-export async function getStaticProps(context: any) {
+export async function getStaticProps() {
   let records: IPostData[] = []
-  // const res = await fetch('http://localhost:3000/api/posts')
-  // console.log(await res.json())
   const res = await search({ pageSize: 20 })
   if (res.success) {
     records = res.data.records
@@ -22,7 +20,7 @@ export async function getStaticProps(context: any) {
 export default function Home({ records }: { records: IPostData[] }) {
   return (
     <BasicLayout>
-      <div className='container mx-auto'>
+      <div className='container flex flex-col mx-auto gap-y-6'>
         {records.map((post) => (
           <Post key={post._id} {...post} />
         ))}

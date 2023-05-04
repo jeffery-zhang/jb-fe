@@ -7,7 +7,7 @@ export const SwrGlobalConfig: FC<{ children: ReactNode }> = ({ children }) => {
       value={{
         loadingTimeout: 5000,
         errorRetryInterval: 1000,
-        errorRetryCount: 5,
+        errorRetryCount: 0,
       }}
     >
       {children}
