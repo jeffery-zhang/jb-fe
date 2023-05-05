@@ -11,7 +11,7 @@ export const Header = () => {
   const router = useRouter()
 
   return (
-    <header className='navbar justify-between bg-base-100'>
+    <header className='navbar justify-between bg-base-100 shadow-2xl'>
       <Logo onClick={() => router.push('/')} />
       <div className='flex items-center flex-none gap-3'>
         <SearchInput />

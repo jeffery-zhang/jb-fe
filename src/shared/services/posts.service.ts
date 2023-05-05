@@ -12,7 +12,7 @@ export const path = {
 }
 
 interface ISearchPosts extends ISearch {
-  author?: string
+  userId?: string
   category?: string
   tags?: string
   sortBy?: Sorter
@@ -25,13 +25,14 @@ interface ISavePost {
   content: string
   intro: string
   poster: string
-  author: string
   category: string
   tags: string[]
 }
 
 export interface IPostData extends ISavePost {
   _id: string
+  userId: string
+  username: string
   like: number
   pv: number
   createTime: string
