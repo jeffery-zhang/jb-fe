@@ -102,15 +102,19 @@ export const UserMenu = () => {
         className='btn btn-ghost btn-circle btn-sm avatar w-8 md:w-10 h-8 md:h-10'
       >
         {isLogin ? (
-          <div className='w-8 md:w-10 overflow-hidden rounded-full bg-primary'>
-            <Image src={user?.avatar || Doge} alt={user?.username || ''} />
+          <div className='avatar w-8 md:w-10'>
+            <div className='rounded-full'>
+              <Image src={user?.avatar || Doge} alt={user?.username || ''} />
+            </div>
           </div>
         ) : (
           <div
-            className='w-8 md:w-10 overflow-hidden text-base-300 hover:text-base-100 rounded-full transition-colors'
+            className='avatar w-8 md:w-10'
             onClick={() => router.push('/login')}
           >
-            <UserCircleIcon />
+            <div className='rounded-full'>
+              <UserCircleIcon />
+            </div>
           </div>
         )}
       </label>
