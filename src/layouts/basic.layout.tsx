@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
-import { ChevronDoubleUpIcon } from '@heroicons/react/24/outline'
+import { ChevronDoubleUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 import { verify, path } from '@/shared/services/auth.service'
 import { Header } from '@/components/header.component'
@@ -10,6 +10,7 @@ export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const mainRef = useRef<HTMLDivElement | null>(null)
   const [showTop, setShowTop] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
+  const isLogin = useUserStore((state) => state.isLogin)
   const login = useUserStore((state) => state.login)
   useSWR(path.verify, async () => {
     const { data } = await verify()
@@ -71,8 +72,8 @@ export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
         {children}
         <div
           className={`${showTop ? 'block' : 'hidden'} \
-            fixed z-50 right-6 bottom-6 w-10 h-10 text-primary \
-            md:right-12 md:bottom-12 md:w-12 md:h-12 \
+            fixed z-50 right-6 bottom-20 w-10 h-10 text-primary \
+            md:right-12 md:bottom-28 md:w-12 md:h-12 shadow-lg \
             bg-base-100 rounded-full p-2 cursor-pointer \
             hover:bg-primary active:bg-primary \
             hover:text-base-100 active:text-base-100 \
@@ -80,6 +81,16 @@ export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
           onClick={handleClick}
         >
           <ChevronDoubleUpIcon />
+        </div>
+        <div
+          className='fixed z-50 bottom-6 right-6 w-10 h-10 text-primary \
+            md:right-12 md:bottom-12 md:w-12 md:h-12 shadow-lg \
+            bg-base-100 rounded-full p-2 cursor-pointer \
+            hover:bg-primary active:bg-primary \
+            hover:text-base-100 active:text-base-100 \
+            transition-colors duration-300 ease-in-out'
+        >
+          <PlusIcon />
         </div>
       </main>
     </div>
