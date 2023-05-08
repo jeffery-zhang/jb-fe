@@ -5,10 +5,10 @@ import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
 
 import { BasicLayout } from '@/layouts/basic.layout'
-import { FormItem } from '@/components/form-item.component'
+import { FormInput } from '@/components/form'
 import { Logo } from '@/components/header.component'
 import { login } from '@/shared/services/auth.service'
-import { useUserStore } from '@/stores/user.store'
+import { useUserStore } from '@/shared/stores/user.store'
 
 export default function Login() {
   const router = useRouter()
@@ -52,23 +52,21 @@ export default function Login() {
           transition-all duration-1000 ease-in-out \
           ${inited ? 'translate-y-0 opacity-1' : 'translate-y-2/4 opacity-0'}`}
         >
-          <Logo className='text-center mb-8 2xl:12' />
-          <FormItem
-            className='mb-8 2xl:mb-12'
+          <Logo className='text-center mb-8 lg:mb-10' />
+          <FormInput
             placeholder='请输入用户名'
-            required
             value={username}
             onChange={setUsername}
             prefix={<UserCircleIcon className='w-5' />}
+            rules={[{ required: true, message: '请输入用户名' }]}
           />
-          <FormItem
-            className='mb-8 2xl:mb-12'
+          <FormInput
             placeholder='请输入密码'
             type='password'
-            required
             value={password}
             onChange={setPassword}
             prefix={<LockClosedIcon className='w-5' />}
+            rules={[{ required: true, message: '请输入密码' }]}
           />
           <button
             className={`btn btn-primary btn-block btn-md 2xl:btn-lg \

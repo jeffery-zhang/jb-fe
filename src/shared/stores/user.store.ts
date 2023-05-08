@@ -1,18 +1,13 @@
 import { create } from 'zustand'
 
+import { UserDataType } from '../interfaces/user.interface'
+
 interface IUserStore {
-  user: IUser | null
+  user: UserDataType | null
   token: string
   isLogin: boolean
-  login: (user: IUser, token: string) => void
+  login: (user: UserDataType, token: string) => void
   logout: () => void
-}
-
-interface IUser {
-  id: string
-  username: string
-  mail: string
-  avatar: string
 }
 
 export const useUserStore = create<IUserStore>((set) => ({

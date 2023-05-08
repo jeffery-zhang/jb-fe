@@ -1,35 +1,17 @@
-import { fetcher } from '../fetcher'
+import { fetcher } from '../utils/fetcher'
 import { IResponse, IActionResponse } from '../interfaces/fetcher.interface'
+import {
+  ILoginData,
+  IRegisterData,
+  IChangePwdData,
+  ILoginResponse,
+} from '../interfaces/user.interface'
 
 export const path = {
   verify: '/auth/verify',
   login: '/auth/login',
   register: '/auth/register',
   changePwd: '/auth/changePwd',
-}
-
-interface ILoginData {
-  username: string
-  password: string
-}
-
-interface IRegisterData extends ILoginData {
-  mail: string
-  avatar?: string
-  roles: string[]
-}
-
-interface IChangePwdData {
-  oldPwd: string
-  password: string
-}
-
-interface ILoginResponse {
-  id: string
-  token: string
-  username: string
-  mail: string
-  avatar: string
 }
 
 export const verify = async (): Promise<IResponse<ILoginResponse | null>> =>

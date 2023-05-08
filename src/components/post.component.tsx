@@ -2,10 +2,10 @@ import Image from 'next/image'
 import { FC } from 'react'
 import dayjs from 'dayjs'
 
-import { IPostData } from '@/shared/services/posts.service'
-import LoadImgFailed from '../../public/load-img-failed.jpg'
+import { IPost } from '@/shared/interfaces/post.interface'
+import LoadImgFailed from '../../public/imgs/load-img-failed.jpg'
 
-export const Post: FC<IPostData> = ({
+export const Post: FC<IPost> = ({
   _id,
   title,
   intro,

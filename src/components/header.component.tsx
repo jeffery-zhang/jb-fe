@@ -4,8 +4,8 @@ import { FC } from 'react'
 import { shallow } from 'zustand/shallow'
 import { UserCircleIcon, SwatchIcon } from '@heroicons/react/24/solid'
 
-import { useUserStore } from '@/stores/user.store'
-import Doge from '../../public/doge.svg'
+import { useUserStore } from '@/shared/stores/user.store'
+import Doge from '../../public/icons/doge.svg'
 
 export const Header = () => {
   const router = useRouter()
@@ -28,7 +28,7 @@ export const Logo: FC<{ className?: string; onClick?: () => void }> = ({
   return (
     <div
       className={`font-great-vibes tracking-widest cursor-default text-primary \
-      ${className}`}
+      ${className || ''}`}
       onClick={() => onClick?.()}
     >
       <span className='text-3xl md:text-4xl'>JB</span>

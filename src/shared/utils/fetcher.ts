@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'antd'
-import { IResponse } from './interfaces/fetcher.interface'
+import { IResponse } from '../interfaces/fetcher.interface'
 
 const clientUrl = process.env.CLIENT_URL || process.env.NEXT_PUBLIC_CLIENT_URL
 

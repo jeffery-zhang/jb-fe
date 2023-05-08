@@ -1,12 +1,26 @@
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
 import { ChevronDoubleUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 import { verify, path } from '@/shared/services/auth.service'
 import { Header } from '@/components/header.component'
-import { useUserStore } from '@/stores/user.store'
+import { useUserStore } from '@/shared/stores/user.store'
+import Banner from '../../public/imgs/banner.jpg'
 
-export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
+interface IProps {
+  children: ReactNode
+  banner?: boolean
+  showCreate?: boolean
+}
+
+export const BasicLayout: FC<IProps> = ({
+  children,
+  banner = false,
+  showCreate = false,
+}) => {
+  const router = useRouter()
   const mainRef = useRef<HTMLDivElement | null>(null)
   const [showTop, setShowTop] = useState(false)
   const [isScrolling, setIsScrolling] = useState(false)
@@ -69,6 +83,12 @@ export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
     <div className='flex flex-col w-full h-full bg-base-200'>
       <Header></Header>
       <main ref={mainRef} className='flex-grow relative overflow-auto'>
+        {banner ? (
+          <div className='w-full absolute'>
+            <Image src={Banner} alt='banner' />
+            <div className='absolute bottom-0 w-full h-full bg-gradient-to-b from-transparent to-base-200'></div>
+          </div>
+        ) : null}
         {children}
         <div
           className={`${showTop ? 'block' : 'hidden'} \
@@ -83,12 +103,14 @@ export const BasicLayout: FC<{ children: ReactNode }> = ({ children }) => {
           <ChevronDoubleUpIcon />
         </div>
         <div
-          className='fixed z-50 bottom-6 right-6 w-10 h-10 text-primary \
+          className={`${isLogin && showCreate ? 'block' : 'hidden'} \
+            fixed z-50 bottom-6 right-6 w-10 h-10 text-primary \
             md:right-12 md:bottom-12 md:w-12 md:h-12 shadow-lg \
             bg-base-100 rounded-full p-2 cursor-pointer \
             hover:bg-primary active:bg-primary \
             hover:text-base-100 active:text-base-100 \
-            transition-colors duration-300 ease-in-out'
+            transition-colors duration-300 ease-in-out`}
+          onClick={() => router.push('/post/create')}
         >
           <PlusIcon />
         </div>

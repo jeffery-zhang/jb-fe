@@ -1,52 +1,24 @@
-import { fetcher } from '../fetcher'
+import { fetcher } from '../utils/fetcher'
 import {
-  ISearch,
   IResponse,
   IResponseRecords,
   IActionResponse,
 } from '../interfaces/fetcher.interface'
+import { ISearchPosts, ISavePost, IPost } from '../interfaces/post.interface'
 
 export const path = {
   base: '/posts',
   save: '/posts/save',
 }
 
-interface ISearchPosts extends ISearch {
-  userId?: string
-  category?: string
-  tags?: string
-  sortBy?: Sorter
-}
-
-export type Sorter = 'createTime' | 'updateTime' | 'like' | 'pv'
-
-interface ISavePost {
-  title: string
-  content: string
-  intro: string
-  poster: string
-  category: string
-  tags: string[]
-}
-
-export interface IPostData extends ISavePost {
-  _id: string
-  userId: string
-  username: string
-  like: number
-  pv: number
-  createTime: string
-  updateTime: string
-}
-
 export const search = async (
   params: ISearchPosts,
-): Promise<IResponseRecords<IPostData>> =>
+): Promise<IResponseRecords<IPost>> =>
   fetcher.get(path.base, {
     params,
   })
 
-export const getOne = async (id: string): Promise<IResponse<IPostData>> =>
+export const getOne = async (id: string): Promise<IResponse<IPost>> =>
   fetcher.get(`${path.base}/${id}`)
 
 export const create = async (data: ISavePost): Promise<IActionResponse> =>
