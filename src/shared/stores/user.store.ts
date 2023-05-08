@@ -21,7 +21,10 @@ export const useUserStore = create<IUserStore>((set) => ({
     set({ user, token, isLogin: true })
   },
   logout: () => {
-    if (typeof window !== 'undefined') window.localStorage.removeItem('token')
     set({ user: null, token: '', isLogin: false })
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('token')
+      window.location.reload()
+    }
   },
 }))

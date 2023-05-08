@@ -26,7 +26,9 @@ export const withForm = <T extends IFormItemProps>(
       <div className={`relative mb-8 lg:mb-10 ${props.className ?? ''}`}>
         {props.label && (
           <label className={`label ${props.labelClassName ?? ''}`}>
-            <span className='label-text'>{props.label}</span>
+            <span className='label-text text-secondary-content'>
+              {props.label}
+            </span>
           </label>
         )}
         <Component {...props} hasError={hasError} validate={handleValidate} />

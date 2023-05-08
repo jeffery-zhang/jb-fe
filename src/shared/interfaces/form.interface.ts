@@ -27,6 +27,15 @@ export interface IFormSelectProps extends IFormItemProps {
   options: IOptionsItem[]
 }
 
+export interface IFormUploaderProps extends IFormItemProps {
+  limit?: number
+}
+
+export interface IEditorProps {
+  value: any
+  onChange: (val: any) => void
+}
+
 export interface IOptionsItem {
   label: string
   value: string

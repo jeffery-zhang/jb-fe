@@ -80,6 +80,9 @@ export const ThemeControl = () => {
         <li>
           <a onClick={() => handleThemeChange('garden')}>Garden</a>
         </li>
+        <li>
+          <a onClick={() => handleThemeChange('dark')}>Dark</a>
+        </li>
       </ul>
     </div>
   )
@@ -94,6 +97,7 @@ export const UserMenu = () => {
     }),
     shallow,
   )
+  const logout = useUserStore((state) => state.logout)
 
   return (
     <div className='dropdown dropdown-end'>
@@ -130,7 +134,7 @@ export const UserMenu = () => {
             <a>全局设置</a>
           </li>
           <li>
-            <a>退出登录</a>
+            <a onClick={logout}>退出登录</a>
           </li>
         </ul>
       ) : null}
