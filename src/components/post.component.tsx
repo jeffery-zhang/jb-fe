@@ -16,15 +16,16 @@ export const Post: FC<IPost> = ({
   return (
     <div className='sm:h-80 md:h-96 lg:h-80 xl:h-96 bg-base-100 rounded-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out'>
       <div className='hero-content w-full justify-between gap-12 flex-col sm:flex-row'>
-        {/* <Image
-          src={poster || LoadImgFailed}
-          alt={title}
-          className='max-w-sm rounded-lg shadow-2xl'
-        /> */}
         <Image
-          src={LoadImgFailed}
+          src={
+            poster.startsWith('http') || poster.startsWith('/')
+              ? poster
+              : LoadImgFailed
+          }
           alt={title}
           className='w-full sm:w-2/4 max-h-64 rounded-lg shadow-2xl'
+          width={640}
+          height={480}
         />
         <div className='flex-1'>
           <h1 className='text-2xl font-bold'>{title}</h1>

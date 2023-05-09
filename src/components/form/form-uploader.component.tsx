@@ -35,7 +35,7 @@ export const FormUploader: FC<IFormUploaderProps> = withForm(
       <div className={`relative ${fieldClassName ?? ''}`}>
         <div
           className={`flex justify-center items-center w-24 h-24 \
-            border text-primary relative \
+            border text-primary relative overflow-hidden \
             hover:border-primary-focus hover:text-primary-focus \
             ${hasError ? 'border-error' : 'border-primary'}`}
         >

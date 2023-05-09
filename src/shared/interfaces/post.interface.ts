@@ -16,6 +16,7 @@ export interface ISavePost {
   poster: string
   category: string
   tags: string[]
+  isPublic: boolean
 }
 
 export interface IPost extends ISavePost {

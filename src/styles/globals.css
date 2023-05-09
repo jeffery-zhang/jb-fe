@@ -15,3 +15,7 @@ body,
 .font-great-vibes {
   font-family: 'GreatVibes', sans-serif;
 }
+
+.bytemd-fullscreen.bytemd {
+  z-index: 9999;
+}

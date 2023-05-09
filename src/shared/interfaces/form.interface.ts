@@ -27,6 +27,8 @@ export interface IFormSelectProps extends IFormItemProps {
   options: IOptionsItem[]
 }
 
+export interface IFormEditorProps extends IFormItemProps {}
+
 export interface IFormUploaderProps extends IFormItemProps {
   limit?: number
 }

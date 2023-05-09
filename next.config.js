@@ -12,5 +12,9 @@ module.exports = () => {
   return {
     reactStrictMode: true,
     rewrites,
+    images: {
+      domains: ['139.84.171.31'],
+      loader: 'default',
+    },
   }
 }

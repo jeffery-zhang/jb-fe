@@ -6,9 +6,13 @@ interface IPostStore {
   setPost: (post: IPost) => void
 }
 
+interface IPostFormData extends ISavePost {
+  tagNames: string
+}
+
 interface IPostForm {
-  form: ISavePost
-  setForm: (form: Partial<ISavePost>) => void
+  form: IPostFormData
+  setForm: (form: Partial<IPostFormData>) => void
   resetForm: () => void
 }
 
@@ -26,6 +30,8 @@ const initPostForm = {
   poster: '',
   category: '',
   tags: [],
+  tagNames: '',
+  isPublic: true,
 }
 
 export const usePostFormStore = create<IPostForm>((set, get) => ({
