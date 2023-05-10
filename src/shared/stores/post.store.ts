@@ -6,7 +6,7 @@ interface IPostStore {
   setPost: (post: IPost) => void
 }
 
-interface IPostFormData extends ISavePost {
+export interface IPostFormData extends ISavePost {
   tagNames: string
 }
 
@@ -23,7 +23,7 @@ export const usePostStore = create<IPostStore>((set) => ({
   },
 }))
 
-const initPostForm = {
+export const initPostForm = {
   title: '',
   content: '',
   intro: '',

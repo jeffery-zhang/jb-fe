@@ -4,9 +4,11 @@ import { message as antdMessage } from 'antd'
 
 import { BasicLayout } from '@/layouts/basic.layout'
 import { FormInput, FormSelect, FormUploader, Editor } from '@/components/form'
-import { usePostFormStore } from '@/shared/stores/post.store'
+import { usePostFormStore, initPostForm } from '@/shared/stores/post.store'
 import { path, getAll } from '@/shared/services/categories.service'
+import { getOne } from '@/shared/services/posts.service'
 import { create } from '@/shared/services/posts.service'
+import { useEffect } from 'react'
 
 export default function EditPost() {
   const router = useRouter()
@@ -19,6 +21,16 @@ export default function EditPost() {
     return []
   })
 
+  const getPostDetail = async () => {
+    const { data, success } = await getOne(router.query.postId as string)
+    if (success) {
+      setForm({
+        ...data,
+        tagNames: data.tags.join(','),
+      })
+    }
+  }
+
   const onSubmit = async () => {
     const { success, message } = await create({
       ...form,
@@ -29,6 +41,14 @@ export default function EditPost() {
       router.push('/')
     }
   }
+
+  useEffect(() => {
+    if (router.query.postId) {
+      getPostDetail()
+    } else {
+      setForm(initPostForm)
+    }
+  }, [router.query.postId])
 
   return (
     <BasicLayout>
@@ -77,14 +97,21 @@ export default function EditPost() {
             placeholder='标签之间用逗号(,)分隔'
           />
           <div className='flex justify-end lg:hidden'>
-            <button
-              onClick={resetForm}
+            <label
+              htmlFor='resetModal'
               className='btn btn-error btn-sm lg:btn-md'
             >
               重置内容
-            </button>
+            </label>
             <button
-              onClick={() => {}}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.setItem(
+                    'tempPostForm',
+                    JSON.stringify(form),
+                  )
+                }
+              }}
               className='btn btn-secondary btn-sm lg:btn-md ml-6 lg:ml-8'
             >
               暂存文章
@@ -116,14 +143,21 @@ export default function EditPost() {
             placeholder='标签之间用逗号(,)分隔'
           />
           <div className='flex justify-end'>
-            <button
-              onClick={resetForm}
+            <label
+              htmlFor='resetModal'
               className='btn btn-error btn-sm lg:btn-md'
             >
               重置内容
-            </button>
+            </label>
             <button
-              onClick={() => {}}
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.localStorage.setItem(
+                    'tempPostForm',
+                    JSON.stringify(form),
+                  )
+                }
+              }}
               className='btn btn-secondary btn-sm lg:btn-md ml-6 lg:ml-8'
             >
               暂存文章
@@ -134,6 +168,24 @@ export default function EditPost() {
             >
               发布文章
             </button>
+          </div>
+        </div>
+        <input type='checkbox' id='resetModal' className='modal-toggle' />
+        <div className='modal'>
+          <div className='modal-box'>
+            <p className='py-4'>未保存的内容将会丢失, 确定要重置吗?</p>
+            <div className='modal-action'>
+              <label htmlFor='resetModal' className='btn btn-outline'>
+                取消
+              </label>
+              <label
+                htmlFor='resetModal'
+                className='btn btn-error'
+                onClick={resetForm}
+              >
+                确定
+              </label>
+            </div>
           </div>
         </div>
       </div>

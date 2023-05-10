@@ -110,7 +110,7 @@ export const BasicLayout: FC<IProps> = ({
             hover:bg-primary active:bg-primary \
             hover:text-base-100 active:text-base-100 \
             transition-colors duration-300 ease-in-out`}
-          onClick={() => router.push('/post/create')}
+          onClick={() => router.push('/post/edit')}
         >
           <PlusIcon />
         </div>

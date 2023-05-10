@@ -8,15 +8,19 @@ import { ISearchPosts, ISavePost, IPost } from '../interfaces/post.interface'
 
 export const path = {
   base: '/posts',
+  ids: '/posts/ids',
   save: '/posts/save',
 }
 
 export const search = async (
   params: ISearchPosts,
-): Promise<IResponseRecords<IPost>> =>
+): Promise<IResponseRecords<Omit<IPost, 'content'>>> =>
   fetcher.get(path.base, {
     params,
   })
+
+export const getAllIds = async (): Promise<IResponse<{ _id: string }[]>> =>
+  fetcher.get(path.ids)
 
 export const getOne = async (id: string): Promise<IResponse<IPost>> =>
   fetcher.get(`${path.base}/${id}`)

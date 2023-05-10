@@ -4,10 +4,10 @@ import { search } from '@/shared/services/posts.service'
 import { IPost } from '@/shared/interfaces/post.interface'
 
 export async function getStaticProps() {
-  let records: IPost[] = []
-  const res = await search({ pageSize: 20 })
-  if (res.success) {
-    records = res.data.records
+  let records: Omit<IPost, 'content'>[] = []
+  const { data, success } = await search({ pageSize: 10 })
+  if (success) {
+    records = data.records
   }
   return {
     props: {
