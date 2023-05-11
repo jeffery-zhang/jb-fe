@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
 import { message as antdMessage } from 'antd'
@@ -6,9 +7,9 @@ import { BasicLayout } from '@/layouts/basic.layout'
 import { FormInput, FormSelect, FormUploader, Editor } from '@/components/form'
 import { usePostFormStore, initPostForm } from '@/shared/stores/post.store'
 import { path, getAll } from '@/shared/services/categories.service'
+import { batchCreate } from '@/shared/services/tags.service'
 import { getOne } from '@/shared/services/posts.service'
-import { create } from '@/shared/services/posts.service'
-import { useEffect } from 'react'
+import { create, update } from '@/shared/services/posts.service'
 
 export default function EditPost() {
   const router = useRouter()
@@ -32,13 +33,27 @@ export default function EditPost() {
   }
 
   const onSubmit = async () => {
-    const { success, message } = await create({
-      ...form,
-      tags: form.tagNames.split(','),
-    })
-    if (success) {
-      antdMessage.success(message)
-      router.push('/')
+    const tags = form.tagNames.split(',')
+    await batchCreate(tags)
+    if (form._id) {
+      const { _id, ...rest } = form
+      const { success, message } = await update(_id, {
+        ...rest,
+        tags: rest.tagNames.split(','),
+      })
+      if (success) {
+        antdMessage.success(message)
+        router.push('/')
+      }
+    } else {
+      const { success, message } = await create({
+        ...form,
+        tags: form.tagNames.split(','),
+      })
+      if (success) {
+        antdMessage.success(message)
+        router.push('/')
+      }
     }
   }
 

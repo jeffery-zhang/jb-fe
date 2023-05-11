@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import dayjs from 'dayjs'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import { PencilSquareIcon, EyeIcon } from '@heroicons/react/24/outline'
 
 import { useUserStore } from '@/shared/stores/user.store'
 import { Img } from '@/components/image.component'
+import { Tag } from '@/components/tag.component'
 import { IPost } from '@/shared/interfaces/post.interface'
 
 export const Post: FC<IPost> = ({
@@ -12,6 +13,8 @@ export const Post: FC<IPost> = ({
   title,
   intro,
   poster,
+  pv,
+  category,
   username,
   updateTime,
 }) => {
@@ -46,10 +49,11 @@ export const Post: FC<IPost> = ({
             <span className='text-sm'>
               {dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
             </span>
+            <span>{category}</span>
           </div>
         </div>
       </div>
-      <div className='p-4 text-center text-md truncate mr-12 lg:mr-0'>
+      <div className='p-4 text-center text-md truncate mx-12 lg:mx-0'>
         {intro}
       </div>
       {user && user?.username === username && (
@@ -60,6 +64,10 @@ export const Post: FC<IPost> = ({
           <PencilSquareIcon />
         </div>
       )}
+      <div className='flex justify-between items-center absolute bottom-5 left-5 w-8 h-6 text-secondary-focus'>
+        <EyeIcon className='w-5' />
+        <span>{pv}</span>
+      </div>
     </div>
   )
 }

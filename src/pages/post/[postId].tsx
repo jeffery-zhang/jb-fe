@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { Viewer } from '@bytemd/react'
 import dayjs from 'dayjs'
 
-import { getAllIds, getOne } from '@/shared/services/posts.service'
+import { getAllIds, viewOne } from '@/shared/services/posts.service'
 import { IPost } from '@/shared/interfaces/post.interface'
 import { BasicLayout } from '@/layouts/basic.layout'
 import { Img } from '@/components/image.component'
@@ -21,7 +21,7 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-  const { data, success } = await getOne(params.postId)
+  const { data, success } = await viewOne(params.postId)
   if (success) {
     return {
       props: data,
@@ -34,13 +34,13 @@ export const getStaticProps = async ({ params }) => {
 
 export default function Detail(props: IPost) {
   return (
-    <BasicLayout banner>
+    <BasicLayout banner showHome>
       <div className='container mx-auto pt-48 pb-20 relative z-10'>
         <div className='max-w-full lg:w-4/5 px-4 md:px-8 lg:px-12 py-24 bg-base-100 markdown-body rounded-lg shadow-lg'>
           <article className='prose max-w-full prose-sm lg:prose-lg'>
             <div>
               <Img
-                className='mx-auto max-w-fit'
+                className='mx-auto max-w-full'
                 shouldRender={false}
                 src={props.poster}
                 alt={props.title}
