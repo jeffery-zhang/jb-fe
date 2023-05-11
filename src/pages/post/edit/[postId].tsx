@@ -7,7 +7,7 @@ import { FormInput, FormSelect, FormUploader, Editor } from '@/components/form'
 import { usePostFormStore, initPostForm } from '@/shared/stores/post.store'
 import { path, getAll } from '@/shared/services/categories.service'
 import { getOne } from '@/shared/services/posts.service'
-import { create } from '@/shared/services/posts.service'
+import { create, update } from '@/shared/services/posts.service'
 import { useEffect } from 'react'
 
 export default function EditPost() {
@@ -32,13 +32,21 @@ export default function EditPost() {
   }
 
   const onSubmit = async () => {
-    const { success, message } = await create({
-      ...form,
-      tags: form.tagNames.split(','),
-    })
-    if (success) {
-      antdMessage.success(message)
-      router.push('/')
+    if (form._id) {
+      const { success, message } = await update(form._id, form)
+      if (success) {
+        antdMessage.success(message)
+        router.push('/')
+      }
+    } else {
+      const { success, message } = await create({
+        ...form,
+        tags: form.tagNames.split(','),
+      })
+      if (success) {
+        antdMessage.success(message)
+        router.push('/')
+      }
     }
   }
 

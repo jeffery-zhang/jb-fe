@@ -6,7 +6,7 @@ const clientUrl = process.env.CLIENT_URL || process.env.NEXT_PUBLIC_CLIENT_URL
 
 const fetcher = axios.create({
   baseURL: clientUrl || '',
-  timeout: 10000,
+  timeout: 30000,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

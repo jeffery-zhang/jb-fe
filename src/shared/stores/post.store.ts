@@ -7,6 +7,7 @@ interface IPostStore {
 }
 
 export interface IPostFormData extends ISavePost {
+  _id?: string
   tagNames: string
 }
 
