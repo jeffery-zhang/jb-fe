@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { Img } from '@/components/image.component'
 
 import { withForm } from './with-form.component'
 import { uploadFile } from '@/shared/services/common.service'
@@ -41,7 +42,13 @@ export const FormUploader: FC<IFormUploaderProps> = withForm(
         >
           {value ? (
             [
-              <img src={value} alt='poster' />,
+              <Img
+                src={value}
+                alt='poster'
+                width={120}
+                height={120}
+                className='object-cover'
+              />,
               <div
                 className='flex justify-around items-center absolute left-0 top-0 \
                   w-full h-full transition-all duration-300 ease-in-out \
@@ -74,7 +81,13 @@ export const FormUploader: FC<IFormUploaderProps> = withForm(
         <input type='checkbox' id='preview-modal' className='modal-toggle' />
         <label htmlFor='preview-modal' className='modal'>
           <div className='modal-box w-full lg:w-1/2 max-w-5xl'>
-            <img src={value} alt='poster' className='w-full' />
+            <Img
+              src={value}
+              alt='poster'
+              width={640}
+              height={480}
+              className='max-w-full'
+            />
           </div>
         </label>
       </div>

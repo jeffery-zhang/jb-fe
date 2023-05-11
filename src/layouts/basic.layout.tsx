@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
@@ -7,6 +6,7 @@ import { ChevronDoubleUpIcon, PlusIcon } from '@heroicons/react/24/outline'
 import { verify, path } from '@/shared/services/auth.service'
 import { Header } from '@/components/header.component'
 import { useUserStore } from '@/shared/stores/user.store'
+import { Img } from '@/components/image.component'
 import Banner from '../../public/imgs/banner.jpg'
 
 interface IProps {
@@ -85,8 +85,8 @@ export const BasicLayout: FC<IProps> = ({
       <main ref={mainRef} className='flex-grow relative overflow-auto'>
         {banner ? (
           <div className='w-full absolute'>
-            <Image src={Banner} alt='banner' />
-            <div className='absolute bottom-0 w-full h-full bg-gradient-to-b from-transparent to-base-200'></div>
+            <Img src={Banner} alt='banner' />
+            <div className='absolute -bottom-1 w-full h-full bg-gradient-to-b from-transparent to-base-200'></div>
           </div>
         ) : null}
         {children}
