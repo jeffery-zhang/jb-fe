@@ -1,7 +1,11 @@
 import { useRouter } from 'next/navigation'
 import { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
-import { ChevronDoubleUpIcon, PlusIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronDoubleUpIcon,
+  PlusIcon,
+  HomeIcon,
+} from '@heroicons/react/24/outline'
 
 import { verify, path } from '@/shared/services/auth.service'
 import { Header } from '@/components/header.component'
@@ -13,12 +17,14 @@ interface IProps {
   children: ReactNode
   banner?: boolean
   showCreate?: boolean
+  showHome?: boolean
 }
 
 export const BasicLayout: FC<IProps> = ({
   children,
   banner = false,
   showCreate = false,
+  showHome = false,
 }) => {
   const router = useRouter()
   const mainRef = useRef<HTMLDivElement | null>(null)
@@ -91,6 +97,18 @@ export const BasicLayout: FC<IProps> = ({
         ) : null}
         {children}
         <div
+          className={`${isLogin && showCreate ? 'block' : 'hidden'} \
+            fixed z-50 bottom-32 right-6 w-10 h-10 text-primary \
+            md:right-12 md:bottom-44 md:w-12 md:h-12 shadow-lg \
+            bg-base-100 rounded-full p-2 cursor-pointer \
+            hover:bg-primary active:bg-primary \
+            hover:text-base-100 active:text-base-100 \
+            transition-colors duration-300 ease-in-out`}
+          onClick={() => router.push('/post/edit')}
+        >
+          <PlusIcon />
+        </div>
+        <div
           className={`${showTop ? 'block' : 'hidden'} \
             fixed z-50 right-6 bottom-20 w-10 h-10 text-primary \
             md:right-12 md:bottom-28 md:w-12 md:h-12 shadow-lg \
@@ -103,16 +121,16 @@ export const BasicLayout: FC<IProps> = ({
           <ChevronDoubleUpIcon />
         </div>
         <div
-          className={`${isLogin && showCreate ? 'block' : 'hidden'} \
-            fixed z-50 bottom-6 right-6 w-10 h-10 text-primary \
+          className={`${showHome ? 'block' : 'hidden'} \
+            fixed z-50 right-6 bottom-6 w-10 h-10 text-primary \
             md:right-12 md:bottom-12 md:w-12 md:h-12 shadow-lg \
             bg-base-100 rounded-full p-2 cursor-pointer \
             hover:bg-primary active:bg-primary \
             hover:text-base-100 active:text-base-100 \
             transition-colors duration-300 ease-in-out`}
-          onClick={() => router.push('/post/edit')}
+          onClick={() => router.push('/')}
         >
-          <PlusIcon />
+          <HomeIcon />
         </div>
       </main>
     </div>

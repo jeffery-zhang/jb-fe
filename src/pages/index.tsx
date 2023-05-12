@@ -18,8 +18,8 @@ export async function getStaticProps() {
 
 export default function Home({ records }: { records: IPost[] }) {
   return (
-    <BasicLayout banner={true} showCreate={true}>
-      <div className='container mx-auto pt-48 pb-20 relative z-10'>
+    <BasicLayout banner showCreate>
+      <div className='container mx-auto pt-48 pb-40 relative z-10'>
         <div className='flex flex-col max-w-full lg:w-3/5 gap-y-6'>
           {records.map((post) => (
             <Post key={post._id} {...post} />

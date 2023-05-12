@@ -9,6 +9,7 @@ import { ISearchPosts, ISavePost, IPost } from '../interfaces/post.interface'
 export const path = {
   base: '/posts',
   ids: '/posts/ids',
+  viewOne: '/posts/realView',
   save: '/posts/save',
 }
 
@@ -24,6 +25,9 @@ export const getAllIds = async (): Promise<IResponse<{ _id: string }[]>> =>
 
 export const getOne = async (id: string): Promise<IResponse<IPost>> =>
   fetcher.get(`${path.base}/${id}`)
+
+export const viewOne = async (id: string): Promise<IResponse<IPost>> =>
+  fetcher.get(`${path.viewOne}/${id}`)
 
 export const create = async (data: ISavePost): Promise<IActionResponse> =>
   fetcher.post(path.save, data)
