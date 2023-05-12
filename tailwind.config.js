@@ -17,6 +17,15 @@ module.exports = {
   },
   plugins: [require('daisyui'), require('@tailwindcss/typography')],
   daisyui: {
-    themes: ['winter', 'autumn', 'garden', 'dark'],
+    themes: [
+      'light',
+      'winter',
+      'autumn',
+      'garden',
+      'dark',
+      'lofi',
+      'forest',
+      'luxury',
+    ],
   },
 }

@@ -69,8 +69,14 @@ export const ThemeControl = () => {
       </label>
       <ul
         tabIndex={0}
-        className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
+        className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-lg w-52'
       >
+        <li>
+          <a onClick={() => handleThemeChange('light')}>Light</a>
+        </li>
+        <li>
+          <a onClick={() => handleThemeChange('dark')}>Dark</a>
+        </li>
         <li>
           <a onClick={() => handleThemeChange('windter')}>Winter</a>
         </li>
@@ -81,7 +87,13 @@ export const ThemeControl = () => {
           <a onClick={() => handleThemeChange('garden')}>Garden</a>
         </li>
         <li>
-          <a onClick={() => handleThemeChange('dark')}>Dark</a>
+          <a onClick={() => handleThemeChange('lofi')}>Lofi</a>
+        </li>
+        <li>
+          <a onClick={() => handleThemeChange('forest')}>Forest</a>
+        </li>
+        <li>
+          <a onClick={() => handleThemeChange('luxury')}>Luxury</a>
         </li>
       </ul>
     </div>
@@ -125,7 +137,7 @@ export const UserMenu = () => {
       {isLogin ? (
         <ul
           tabIndex={0}
-          className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
+          className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-lg w-52'
         >
           <li>
             <a>我的发布</a>
