@@ -26,6 +26,7 @@ module.exports = {
       'lofi',
       'forest',
       'luxury',
+      'synthwave',
     ],
   },
 }

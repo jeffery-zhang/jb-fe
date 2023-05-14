@@ -1,4 +1,4 @@
-export { FormInput } from './form-input.component'
-export { FormSelect } from './form-select.component'
-export { FormUploader } from './form-uploader.component'
+export { Input } from './input.component'
+export { Select } from './select.component'
+export { FormUploader } from './uploader.component'
 export { Editor } from './editor.component'

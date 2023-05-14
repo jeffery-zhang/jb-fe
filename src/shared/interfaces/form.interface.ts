@@ -7,29 +7,26 @@ export interface IFormProps {
 
 export interface IFormItemProps {
   className?: string
-  label?: string
-  labelClassName?: string
-  fieldClassName?: string
   placeholder?: string
   disabled?: boolean
-  value: string
-  rules?: IRuleItem[]
-  onChange: (value: string) => void
+  value?: string
+  onChange?: (value: string) => void
 }
 
-export interface IFormInputProps extends IFormItemProps {
+export interface IInputProps extends IFormItemProps {
   prefix?: ReactNode | null
   suffix?: ReactNode | null
   type?: 'text' | 'password'
 }
 
-export interface IFormSelectProps extends IFormItemProps {
+export interface ISelectProps extends IFormItemProps {
   options: IOptionsItem[]
 }
 
 export interface IFormEditorProps extends IFormItemProps {}
 
 export interface IFormUploaderProps extends IFormItemProps {
+  accept?: string
   limit?: number
 }
 

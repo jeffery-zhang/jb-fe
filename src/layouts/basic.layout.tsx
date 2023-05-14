@@ -1,17 +1,23 @@
 import { useRouter } from 'next/navigation'
-import { FC, ReactNode, useEffect, useRef, useState } from 'react'
+import { FC, ReactNode, useEffect, useRef } from 'react'
 import useSWR from 'swr'
-import {
-  ChevronDoubleUpIcon,
-  PlusIcon,
-  HomeIcon,
-} from '@heroicons/react/24/outline'
+import { PlusIcon, HomeIcon } from '@heroicons/react/24/outline'
 
 import { verify, path } from '@/shared/services/auth.service'
-import { Header } from '@/components/header.component'
+import {
+  getUserSetting,
+  path as settingPath,
+} from '@/shared/services/settings.service'
+import { Header } from '@/components/header/header.component'
 import { useUserStore } from '@/shared/stores/user.store'
-import { Img } from '@/components/image.component'
-import Banner from '../../public/imgs/banner.jpg'
+import { useSettingsStore } from '@/shared/stores/settings.store'
+import { Drawer } from '@/components/drawer.component'
+import { Themes } from '@/components/settings/themes.component'
+import { Banners } from '@/components/settings/banners.component'
+import { Rounded } from '@/components/settings/rounded.component'
+import { Banner } from '@/components/layouts/banner.component'
+import { BackTop } from '@/components/layouts/back-top.component'
+import { User } from '@/components/settings/user.component'
 
 interface IProps {
   children: ReactNode
@@ -27,75 +33,42 @@ export const BasicLayout: FC<IProps> = ({
   showHome = false,
 }) => {
   const router = useRouter()
-  const mainRef = useRef<HTMLDivElement | null>(null)
-  const [showTop, setShowTop] = useState(false)
-  const [isScrolling, setIsScrolling] = useState(false)
+  const contentRef = useRef<HTMLDivElement | null>(null)
+  const { visible, show, hide, setBanner, setTheme, setRounded } =
+    useSettingsStore((state) => ({
+      visible: state.visible,
+      show: state.show,
+      hide: state.hide,
+      setTheme: state.setTheme,
+      setBanner: state.setBanner,
+      setRounded: state.setRounded,
+    }))
   const isLogin = useUserStore((state) => state.isLogin)
   const login = useUserStore((state) => state.login)
   useSWR(path.verify, async () => {
-    const { data } = await verify()
-    if (data) {
+    const { data, success } = await verify()
+    if (success && data) {
       login(data, window.localStorage.getItem('token') || '')
     }
-    return data
+  })
+  useSWR(isLogin ? settingPath.getOne : null, async () => {
+    const { data, success } = await getUserSetting()
+    if (success) {
+      const { banner, theme, rounded } = data
+      banner && setBanner(banner)
+      theme && setTheme(theme)
+      rounded && setRounded(rounded)
+    }
   })
 
-  const handleScroll = () => {
-    if (mainRef.current) {
-      const { scrollTop } = mainRef.current
-      if (scrollTop >= 500) {
-        setShowTop(true)
-      } else {
-        setShowTop(false)
-      }
-    }
-  }
-  const handleClick = () => {
-    if (!mainRef.current || isScrolling || typeof window === 'undefined') return
-    setIsScrolling(true)
-    const main = mainRef.current
-    const duration = 500 // 滚动动画的时长，单位为毫秒
-    const startTime = performance.now()
-    const startY = main.scrollTop
-
-    function animate(currentTime: number) {
-      const timeElapsed = currentTime - startTime
-      const fraction = timeElapsed / duration
-
-      if (fraction < 1) {
-        const newY = startY * (1 - fraction * fraction)
-        main.scrollTop = newY
-        window.requestAnimationFrame(animate)
-      } else {
-        main.scrollTop = 0
-        setIsScrolling(false)
-      }
-    }
-
-    window.requestAnimationFrame(animate)
-  }
-
-  useEffect(() => {
-    if (mainRef.current) {
-      mainRef.current.addEventListener('scroll', handleScroll)
-    }
-
-    return () => {
-      mainRef.current?.removeEventListener('scroll', handleScroll)
-    }
-  }, [mainRef.current])
-
   return (
-    <div className='flex flex-col w-full h-full bg-base-200'>
+    <div className='flex flex-col w-full h-full bg-base-200 drawer'>
       <Header></Header>
-      <main ref={mainRef} className='flex-grow relative overflow-auto'>
-        {banner ? (
-          <div className='w-full absolute'>
-            <Img src={Banner} alt='banner' />
-            <div className='absolute -bottom-1 w-full h-full bg-gradient-to-b from-transparent to-base-200'></div>
-          </div>
-        ) : null}
-        {children}
+      <main className='flex-grow relative overflow-hidden'>
+        {banner ? <Banner /> : null}
+        <div ref={contentRef} className='w-full h-full overflow-y-auto'>
+          {children}
+        </div>
         <div
           className={`${isLogin && showCreate ? 'block' : 'hidden'} \
             fixed z-50 bottom-32 right-6 w-10 h-10 text-primary \
@@ -104,22 +77,11 @@ export const BasicLayout: FC<IProps> = ({
             hover:bg-primary active:bg-primary \
             hover:text-base-100 active:text-base-100 \
             transition-colors duration-300 ease-in-out`}
-          onClick={() => router.push('/post/edit')}
+          onClick={() => router.push('/post/edit/create')}
         >
           <PlusIcon />
         </div>
-        <div
-          className={`${showTop ? 'block' : 'hidden'} \
-            fixed z-50 right-6 bottom-20 w-10 h-10 text-primary \
-            md:right-12 md:bottom-28 md:w-12 md:h-12 shadow-lg \
-            bg-base-100 rounded-full p-2 cursor-pointer \
-            hover:bg-primary active:bg-primary \
-            hover:text-base-100 active:text-base-100 \
-            transition-colors duration-300 ease-in-out`}
-          onClick={handleClick}
-        >
-          <ChevronDoubleUpIcon />
-        </div>
+        <BackTop element={contentRef.current} />
         <div
           className={`${showHome ? 'block' : 'hidden'} \
             fixed z-50 right-6 bottom-6 w-10 h-10 text-primary \
@@ -133,6 +95,17 @@ export const BasicLayout: FC<IProps> = ({
           <HomeIcon />
         </div>
       </main>
+      <Drawer
+        visible={visible}
+        show={show}
+        hide={hide}
+        title='偏好设置'
+        footer={<User className='block lg:hidden' />}
+      >
+        <Themes />
+        <Banners />
+        <Rounded />
+      </Drawer>
     </div>
   )
 }

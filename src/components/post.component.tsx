@@ -4,8 +4,11 @@ import dayjs from 'dayjs'
 import { PencilSquareIcon, EyeIcon } from '@heroicons/react/24/outline'
 
 import { useUserStore } from '@/shared/stores/user.store'
+import {
+  useSettingsStore,
+  getRoundedClass,
+} from '@/shared/stores/settings.store'
 import { Img } from '@/components/image.component'
-import { Tag } from '@/components/tag.component'
 import { IPost } from '@/shared/interfaces/post.interface'
 
 export const Post: FC<IPost> = ({
@@ -19,15 +22,21 @@ export const Post: FC<IPost> = ({
   updateTime,
 }) => {
   const user = useUserStore((state) => state.user)
+  const rounded = useSettingsStore((state) => state.rounded)
   const router = useRouter()
 
   return (
-    <div className='relative sm:h-80 md:h-96 lg:h-80 xl:h-96 bg-base-100 rounded-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out'>
+    <div
+      className={`relative md:h-96 pb-12 md:pb-0 bg-base-100 \
+      hover:shadow-2xl hover:scale-105 transition-all duration-300 ease-in-out \
+      ${getRoundedClass(rounded)}`}
+    >
       <div className='hero-content w-full justify-between gap-12 flex-col sm:flex-row'>
         <div
-          className='flex items-center justify-center w-full sm:w-2/4 max-h-64 \
-            overflow-hidden rounded-lg shadow-2xl cursor-pointer'
-          onClick={() => router.push(`/post/${_id}`)}
+          className={`flex items-center justify-center w-full sm:w-2/4 max-h-64 \
+          overflow-hidden shadow-2xl cursor-pointer \
+          ${getRoundedClass(rounded)}`}
+          onClick={() => router.push(`/post/details/${_id}`)}
         >
           <Img
             src={poster}
@@ -40,11 +49,11 @@ export const Post: FC<IPost> = ({
         <div className='flex-1'>
           <h1
             className='text-2xl font-bold cursor-pointer'
-            onClick={() => router.push(`/post/${_id}`)}
+            onClick={() => router.push(`/post/details/${_id}`)}
           >
             {title}
           </h1>
-          <div className='flex flex-col gap-6 py-6 text-secondary-content'>
+          <div className='flex flex-col gap-6 py-6 text-base-300'>
             <span className='text-sm'>{username}</span>
             <span className='text-sm'>
               {dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
