@@ -1,11 +1,6 @@
 import { ReactNode } from 'react'
 
-export interface IFormProps {
-  hasError: boolean
-  validate: (currentVal?: any) => void
-}
-
-export interface IFormItemProps {
+export interface IFormFieldProps {
   className?: string
   placeholder?: string
   disabled?: boolean
@@ -13,19 +8,19 @@ export interface IFormItemProps {
   onChange?: (value: string) => void
 }
 
-export interface IInputProps extends IFormItemProps {
+export interface IInputProps extends IFormFieldProps {
   prefix?: ReactNode | null
   suffix?: ReactNode | null
   type?: 'text' | 'password'
 }
 
-export interface ISelectProps extends IFormItemProps {
+export interface ISelectProps extends IFormFieldProps {
   options: IOptionsItem[]
 }
 
-export interface IFormEditorProps extends IFormItemProps {}
+export interface IFormEditorProps extends IFormFieldProps {}
 
-export interface IFormUploaderProps extends IFormItemProps {
+export interface IImagUploaderProps extends IFormFieldProps {
   accept?: string
   limit?: number
 }
@@ -39,18 +34,4 @@ export interface IOptionsItem {
   label: string
   value: string
   disabled?: boolean
-}
-
-export interface IRuleItem {
-  required?: boolean
-  pattern?: RegExp
-  type?: 'string' | 'number' | 'array' | 'any' | 'boolean'
-  max?: number
-  min?: number
-  message?: string
-}
-
-export interface IValidatorResult {
-  valid: boolean
-  message: string
 }

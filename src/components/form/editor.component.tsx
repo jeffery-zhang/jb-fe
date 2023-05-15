@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import zhHans from 'bytemd/locales/zh_Hans.json'
 import { Editor as BytemdEditor } from '@bytemd/react'
 import gfm from '@bytemd/plugin-gfm'
@@ -13,6 +13,7 @@ import { uploadFile } from '@/shared/services/common.service'
 import { IFormEditorProps } from '@/shared/interfaces/form.interface'
 
 export const Editor: FC<IFormEditorProps> = ({ value, onChange }) => {
+  const [val, setVal] = useState('')
   const plugins = useMemo(
     () => [gfm(), frontmatter(), highlight(), gemoji(), breaks()],
     [],
@@ -21,8 +22,11 @@ export const Editor: FC<IFormEditorProps> = ({ value, onChange }) => {
   return (
     <div className='mb-8 lg:mb-10'>
       <BytemdEditor
-        value={value}
-        onChange={onChange}
+        value={value || val}
+        onChange={(v) => {
+          setVal(v)
+          onChange?.(v)
+        }}
         plugins={plugins}
         locale={zhHans}
         uploadImages={async (files) => {

@@ -2,12 +2,11 @@ import { FC, useState } from 'react'
 import { Img } from '@/components/image.component'
 
 import { uploadFile } from '@/shared/services/common.service'
-import { IFormUploaderProps } from '@/shared/interfaces/form.interface'
+import { IImagUploaderProps } from '@/shared/interfaces/form.interface'
 import { PlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline'
 
-export const FormUploader: FC<IFormUploaderProps> = ({
+export const ImagUploader: FC<IImagUploaderProps> = ({
   className,
-  accept,
   limit,
   value,
   onChange,
@@ -42,8 +41,7 @@ export const FormUploader: FC<IFormUploaderProps> = ({
     <div className={`relative ${className ?? ''}`}>
       <div
         className={`flex justify-center items-center w-24 h-24 \
-            border text-primary relative overflow-hidden \
-            hover:border-primary-focus hover:text-primary-focus`}
+            border border-primary text-primary relative overflow-hidden`}
       >
         {value ? (
           [
@@ -78,7 +76,7 @@ export const FormUploader: FC<IFormUploaderProps> = ({
       </div>
       <input
         type='file'
-        accept={accept || 'image/*'}
+        accept={'image/*'}
         className={`opacity-0 absolute w-24 h-24 left-0 top-0 cursor-pointer \
             ${value ? 'hidden' : 'inline-block'}`}
         onChange={handleFileChange}

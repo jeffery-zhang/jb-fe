@@ -4,8 +4,7 @@ import { useRouter } from 'next/router'
 import { message as antdMessage, Form } from 'antd'
 
 import { BasicLayout } from '@/layouts/basic.layout'
-import { Input, Select, FormUploader, Editor } from '@/components/form'
-import { usePostFormStore, initPostForm } from '@/shared/stores/post.store'
+import { Input, Select, ImagUploader, Editor } from '@/components/form'
 import { path, getAll } from '@/shared/services/categories.service'
 import { batchCreate } from '@/shared/services/tags.service'
 import { getOne } from '@/shared/services/posts.service'
@@ -18,7 +17,6 @@ import {
 export default function EditPost() {
   const [formRef] = Form.useForm()
   const router = useRouter()
-  const { form, setForm, resetForm } = usePostFormStore()
   const rounded = useSettingsStore((state) => state.rounded)
   const { data: categories } = useSWR(path.getAll, async () => {
     const { data, success } = await getAll()
@@ -31,21 +29,30 @@ export default function EditPost() {
   const getPostDetail = async () => {
     const { data, success } = await getOne(router.query.postId as string)
     if (success) {
-      setForm({
+      formRef.setFieldsValue({
         ...data,
         tagNames: data.tags.join(','),
       })
     }
   }
 
+  const onCached = () => {
+    const cachedForm = formRef.getFieldsValue()
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('cachedForm', JSON.stringify(cachedForm))
+    }
+  }
+
   const onSubmit = async () => {
-    const tags = form.tagNames.split(',')
+    if (!(await formRef.validateFields())) return
+    const vals = formRef.getFieldsValue()
+    const tags = vals['tagNames'].split(',')
     await batchCreate(tags)
-    if (form._id) {
-      const { _id, ...rest } = form
+    if (vals['_id']) {
+      const { _id, ...rest } = vals
       const { success, message } = await update(_id, {
         ...rest,
-        tags: rest.tagNames.split(','),
+        tags,
       })
       if (success) {
         antdMessage.success(message)
@@ -53,8 +60,8 @@ export default function EditPost() {
       }
     } else {
       const { success, message } = await create({
-        ...form,
-        tags: form.tagNames.split(','),
+        ...vals,
+        tags,
       })
       if (success) {
         antdMessage.success(message)
@@ -66,7 +73,10 @@ export default function EditPost() {
   useEffect(() => {
     if (router.query.postId) {
       if (router.query.postId === 'create') {
-        setForm(initPostForm)
+        if (typeof window !== 'undefined') {
+          const cachedForm = window.localStorage.getItem('cachedForm')
+          formRef.setFieldsValue(cachedForm)
+        }
       } else {
         getPostDetail()
       }
@@ -82,48 +92,61 @@ export default function EditPost() {
       >
         <h2 className='font-bold'>编辑文章</h2>
       </div>
-      <Form labelCol={{ span: 4 }} form={formRef}>
+      <Form
+        labelCol={{ span: 4 }}
+        form={formRef}
+        colon={false}
+        requiredMark={false}
+      >
         <div className='container flex justify-between mx-auto py-10 lg:pb-20 relative'>
           <div
             className={`form-control w-full lg:w-3/5 bg-base-100 shadow-lg p-6 lg:p-10 ${getRoundedClass(
               rounded,
             )}`}
           >
+            <Form.Item name='_id' hidden></Form.Item>
             <Form.Item
               name='title'
+              className='mb-8 lg:mb-10'
+              rules={[{ required: true, message: '请输入文章标题' }]}
               label={
                 <span className='text-right text-base-content'>文章标题</span>
               }
-              className='mb-8 lg:mb-10'
             >
               <Input />
             </Form.Item>
             <Form.Item
               name='intro'
+              className='mb-8 lg:mb-10'
+              rules={[{ required: true, message: '请输入文章简介' }]}
               label={
                 <span className='text-right text-base-content'>文章简介</span>
               }
-              className='mb-8 lg:mb-10'
             >
               <Input />
             </Form.Item>
             <Form.Item
               name='poster'
+              className='mb-8 lg:mb-10'
+              rules={[{ required: true, message: '请上传文章封面' }]}
               label={
                 <span className='text-right text-base-content'>文章封面</span>
               }
-              className='mb-8 lg:mb-10'
             >
-              <FormUploader limit={2 * 1024 * 1024} accept='image/*' />
+              <ImagUploader limit={2 * 1024 * 1024} />
             </Form.Item>
-            <Editor
-              value={form.content}
-              onChange={(val) => setForm({ content: val })}
-            />
+            <Form.Item
+              name='content'
+              className='mb-8 lg:mb-10'
+              rules={[{ required: true, message: '请输入文章内容' }]}
+            >
+              <Editor />
+            </Form.Item>
             <Form.Item
               name='category'
-              label={<span className='text-right text-base-content'>分类</span>}
               className='mb-8 lg:mb-10 lg:hidden'
+              rules={[{ required: true, message: '请选择文章分类' }]}
+              label={<span className='text-right text-base-content'>分类</span>}
             >
               <Select
                 options={
@@ -136,8 +159,9 @@ export default function EditPost() {
             </Form.Item>
             <Form.Item
               name='tagNames'
-              label={<span className='text-right text-base-content'>标签</span>}
               className='mb-8 lg:mb-10 lg:hidden'
+              rules={[{ required: true, message: '请输入文章标签' }]}
+              label={<span className='text-right text-base-content'>标签</span>}
             >
               <Input placeholder='标签之间用逗号(,)分隔' />
             </Form.Item>
@@ -149,14 +173,7 @@ export default function EditPost() {
                 重置内容
               </label>
               <button
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.localStorage.setItem(
-                      'tempPostForm',
-                      JSON.stringify(form),
-                    )
-                  }
-                }}
+                onClick={onCached}
                 className='btn btn-secondary btn-sm lg:btn-md ml-6 lg:ml-8'
               >
                 暂存文章
@@ -176,8 +193,9 @@ export default function EditPost() {
           >
             <Form.Item
               name='category'
-              label={<span className='text-right text-base-content'>分类</span>}
               className='mb-8 lg:mb-10 hidden lg:block'
+              rules={[{ required: true, message: '请选择文章分类' }]}
+              label={<span className='text-right text-base-content'>分类</span>}
             >
               <Select
                 options={
@@ -191,8 +209,9 @@ export default function EditPost() {
             <Form.Item
               name='tagNames'
               labelCol={{ span: 4 }}
-              label={<span className='text-right text-base-content'>标签</span>}
               className='mb-8 lg:mb-10 hidden lg:block'
+              rules={[{ required: true, message: '请输入文章标签' }]}
+              label={<span className='text-right text-base-content'>标签</span>}
             >
               <Input placeholder='标签之间用逗号(,)分隔' />
             </Form.Item>
@@ -204,14 +223,7 @@ export default function EditPost() {
                 重置内容
               </label>
               <button
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.localStorage.setItem(
-                      'tempPostForm',
-                      JSON.stringify(form),
-                    )
-                  }
-                }}
+                onClick={onCached}
                 className='btn btn-secondary btn-sm lg:btn-md ml-6'
               >
                 暂存文章
@@ -235,7 +247,7 @@ export default function EditPost() {
                 <label
                   htmlFor='resetModal'
                   className='btn btn-error'
-                  onClick={resetForm}
+                  onClick={() => formRef.resetFields()}
                 >
                   确定
                 </label>
