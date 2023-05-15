@@ -9,10 +9,10 @@ import breaks from '@bytemd/plugin-breaks'
 import 'bytemd/dist/index.css'
 import 'highlight.js/styles/default.css'
 
-import { uploadFile } from '@/shared/services/common.service'
-import { IFormEditorProps } from '@/shared/interfaces/form.interface'
+import { uploadContentImg } from '@/shared/services/common.service'
+import { IEditorProps } from '@/shared/interfaces/form.interface'
 
-export const Editor: FC<IFormEditorProps> = ({ value, onChange }) => {
+export const Editor: FC<IEditorProps> = ({ value, onChange }) => {
   const [val, setVal] = useState('')
   const plugins = useMemo(
     () => [gfm(), frontmatter(), highlight(), gemoji(), breaks()],
@@ -30,7 +30,7 @@ export const Editor: FC<IFormEditorProps> = ({ value, onChange }) => {
         plugins={plugins}
         locale={zhHans}
         uploadImages={async (files) => {
-          const { data, success } = await uploadFile({ file: files[0] })
+          const { data, success } = await uploadContentImg({ file: files[0] })
           if (success) return [{ url: data }]
           return []
         }}

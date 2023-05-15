@@ -7,8 +7,8 @@ import { BasicLayout } from '@/layouts/basic.layout'
 import { Input, Select, ImagUploader, Editor } from '@/components/form'
 import { path, getAll } from '@/shared/services/categories.service'
 import { batchCreate } from '@/shared/services/tags.service'
-import { getOne } from '@/shared/services/posts.service'
-import { create, update } from '@/shared/services/posts.service'
+import { uploadPoster } from '@/shared/services/common.service'
+import { create, update, getOne } from '@/shared/services/posts.service'
 import {
   useSettingsStore,
   getRoundedClass,
@@ -75,7 +75,7 @@ export default function EditPost() {
       if (router.query.postId === 'create') {
         if (typeof window !== 'undefined') {
           const cachedForm = window.localStorage.getItem('cachedForm')
-          formRef.setFieldsValue(cachedForm)
+          cachedForm && formRef.setFieldsValue(cachedForm)
         }
       } else {
         getPostDetail()
@@ -133,7 +133,10 @@ export default function EditPost() {
                 <span className='text-right text-base-content'>文章封面</span>
               }
             >
-              <ImagUploader limit={2 * 1024 * 1024} />
+              <ImagUploader
+                limit={1 * 1024 * 1024}
+                action={(file) => uploadPoster({ file })}
+              />
             </Form.Item>
             <Form.Item
               name='content'

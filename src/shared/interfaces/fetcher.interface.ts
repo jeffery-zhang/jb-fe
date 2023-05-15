@@ -16,7 +16,7 @@ export interface IResponse<T = any> {
 
 export interface IResponseRecords<T = any> extends IResponse<IRecords<T>> {}
 
-export interface IRecords<T> {
+export interface IRecords<T = any> {
   total: number
   page: number
   pageSize: number

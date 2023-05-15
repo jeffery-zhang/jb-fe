@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { message, Form } from 'antd'
+import { Form } from 'antd'
 import { useRouter } from 'next/router'
 import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'

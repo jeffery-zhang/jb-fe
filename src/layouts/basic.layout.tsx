@@ -1,5 +1,5 @@
 import { useRouter } from 'next/navigation'
-import { FC, ReactNode, useEffect, useRef } from 'react'
+import { FC, ReactNode, useRef } from 'react'
 import useSWR from 'swr'
 import { PlusIcon, HomeIcon } from '@heroicons/react/24/outline'
 
@@ -57,7 +57,7 @@ export const BasicLayout: FC<IProps> = ({
       const { banner, theme, rounded } = data
       banner && setBanner(banner)
       theme && setTheme(theme)
-      rounded && setRounded(rounded)
+      if (rounded || rounded === 0) setRounded(rounded)
     }
   })
 

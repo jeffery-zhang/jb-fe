@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 import { Viewer } from '@bytemd/react'
 import dayjs from 'dayjs'
 

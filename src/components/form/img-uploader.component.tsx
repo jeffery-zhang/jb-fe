@@ -1,13 +1,13 @@
 import { FC, useState } from 'react'
 import { Img } from '@/components/image.component'
 
-import { uploadFile } from '@/shared/services/common.service'
 import { IImagUploaderProps } from '@/shared/interfaces/form.interface'
 import { PlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 export const ImagUploader: FC<IImagUploaderProps> = ({
   className,
-  limit,
+  limit = 2 * 1024 * 1024,
+  action,
   value,
   onChange,
 }) => {
@@ -30,7 +30,8 @@ export const ImagUploader: FC<IImagUploaderProps> = ({
   }
 
   const onUpload = async (file: File) => {
-    const { data, success } = await uploadFile({ file })
+    if (!action || typeof action !== 'function') return
+    const { data, success } = await action(file)
     if (success) {
       setVal(data)
       onChange?.(data)
@@ -41,7 +42,7 @@ export const ImagUploader: FC<IImagUploaderProps> = ({
     <div className={`relative ${className ?? ''}`}>
       <div
         className={`flex justify-center items-center w-24 h-24 \
-            border border-primary text-primary relative overflow-hidden`}
+        border border-primary text-primary relative overflow-hidden`}
       >
         {value ? (
           [
@@ -54,9 +55,9 @@ export const ImagUploader: FC<IImagUploaderProps> = ({
             />,
             <div
               className='flex justify-around items-center absolute left-0 top-0 \
-                  w-full h-full transition-all duration-300 ease-in-out \
-                  bg-base-content opacity-100 lg:bg-transparent lg:opacity-0 \
-                  hover:opacity-100 hover:bg-base-content bg-opacity-30 hover:bg-opacity-30'
+                w-full h-full transition-all duration-300 ease-in-out \
+                bg-base-content opacity-100 lg:bg-transparent lg:opacity-0 \
+                hover:opacity-100 hover:bg-base-content bg-opacity-30 hover:bg-opacity-30'
             >
               <label htmlFor='preview-modal'>
                 <EyeIcon className='text-base-100 w-6 h-6 cursor-pointer' />

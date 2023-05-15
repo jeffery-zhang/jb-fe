@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { IResponse } from './fetcher.interface'
 
 export interface IFormFieldProps {
   className?: string
@@ -18,17 +19,12 @@ export interface ISelectProps extends IFormFieldProps {
   options: IOptionsItem[]
 }
 
-export interface IFormEditorProps extends IFormFieldProps {}
-
 export interface IImagUploaderProps extends IFormFieldProps {
-  accept?: string
   limit?: number
+  action?: (file: File) => Promise<any>
 }
 
-export interface IEditorProps {
-  value: any
-  onChange: (val: any) => void
-}
+export interface IEditorProps extends IFormFieldProps {}
 
 export interface IOptionsItem {
   label: string

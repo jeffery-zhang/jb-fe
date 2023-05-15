@@ -1,8 +1,6 @@
 import { fetcher } from '../utils/fetcher'
 import {
   IResponse,
-  IResponseRecords,
-  IActionResponse,
 } from '../interfaces/fetcher.interface'
 
 interface IUploadData {
