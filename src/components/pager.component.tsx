@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react'
+import { throttle } from 'lodash'
 
 import {
   useSettingsStore,
@@ -14,31 +15,58 @@ interface IProps {
 
 export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
   const rounded = useSettingsStore((state) => state.rounded)
-  const pages = useMemo(() => Math.ceil(total / pageSize), [pageSize, total])
+  const allPages = useMemo(() => Math.ceil(total / pageSize), [pageSize, total])
+  const pages: number[] = useMemo(() => {
+    const first = Math.max(1, Math.min(page - 3, allPages - 6))
+    const last = Math.min(allPages, Math.max(page + 3, 7))
+    if (first === last) return [1]
+    return [
+      first,
+      ...Array.from({ length: last - first - 1 }, (_, i) => i + first + 1),
+      last,
+    ]
+  }, [page, pageSize, total])
+  const onChangeWithThrottle = throttle(onChange, 1000)
 
   return (
     <div className='flex justify-end items-center gap-x-2'>
       <button
         className={`btn btn-ghost ${getRoundedClass(rounded)}`}
         disabled={page === 1}
-        onClick={() => onChange(page - 1, pageSize)}
+        onClick={() => onChangeWithThrottle(page - 1, pageSize)}
       >
         {'<'}
       </button>
-      {Array.from({ length: pages }).map((_, index) => (
+      {pages[0] > 1 && (
         <button
-          key={index}
           className={`btn btn-ghost ${getRoundedClass(rounded)}`}
-          disabled={page === index + 1}
-          onClick={() => onChange(index + 1, pageSize)}
+          onClick={() => onChangeWithThrottle(page - 4, pageSize)}
         >
-          {index + 1}
+          ...
+        </button>
+      )}
+      {pages.map((number) => (
+        <button
+          key={number}
+          className={`btn btn-ghost ${getRoundedClass(rounded)}`}
+          disabled={page === number}
+          onClick={() => onChangeWithThrottle(number, pageSize)}
+        >
+          {number}
         </button>
       ))}
+      {pages[pages.length - 1] < allPages && (
+        <button
+          className={`btn btn-ghost ${getRoundedClass(rounded)}`}
+          onClick={() => onChangeWithThrottle(page + 4, pageSize)}
+        >
+          ...
+        </button>
+      )}
       <button
         className={`btn btn-ghost ${getRoundedClass(rounded)}`}
-        disabled={page === pages}
-        onClick={() => onChange(page + 1, pageSize)}
+        disabled={page === allPages}
+        onClick={() => onChangeWithThrottle(page + 1, pageSize)}
       >
         {'>'}
       </button>

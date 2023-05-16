@@ -11,7 +11,7 @@ import {
 import { Img } from '@/components/image.component'
 import { IPost } from '@/shared/interfaces/post.interface'
 
-export const Post: FC<IPost> = ({
+export const Post: FC<Omit<IPost, 'content'>> = ({
   _id,
   title,
   intro,

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { IResponse } from './fetcher.interface'
 
 export interface IFormFieldProps {
   className?: string
