@@ -49,7 +49,7 @@ export default function EditPost() {
     const tags = vals['tagNames'].split(',')
     await batchCreate(tags)
     if (vals['_id']) {
-      const { _id, ...rest } = vals
+      const { _id, tagNames, ...rest } = vals
       const { success, message } = await update(_id, {
         ...rest,
         tags,
@@ -59,8 +59,9 @@ export default function EditPost() {
         router.push('/')
       }
     } else {
+      const { tagNames, ...rest } = vals
       const { success, message } = await create({
-        ...vals,
+        ...rest,
         tags,
       })
       if (success) {

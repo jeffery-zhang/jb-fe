@@ -3,6 +3,10 @@ import EyeIcon from '@heroicons/react/24/outline/EyeIcon'
 import EyeSlashIcon from '@heroicons/react/24/outline/EyeSlashIcon'
 
 import { IInputProps } from '@/shared/interfaces/form.interface'
+import {
+  useSettingsStore,
+  getRoundedClass,
+} from '@/shared/stores/settings.store'
 
 export const Input: FC<IInputProps> = ({
   className,
@@ -13,18 +17,21 @@ export const Input: FC<IInputProps> = ({
   disabled,
   value,
   onChange,
+  onKeydown,
 }) => {
   const [showPwd, setShowPwd] = useState(false)
   const [val, setVal] = useState('')
+  const rounded = useSettingsStore((state) => state.rounded)
 
   return (
     <div className={`relative ${className ?? ''}`}>
       <input
         className={`input input-bordered input-primary \
-            input-sm lg:input-md w-full \
-            ${false ? 'input-error' : ''}
-            ${prefix ? 'pl-10 lg:pl-10' : ''} \
-            ${suffix || type === 'password' ? 'pr-10 lg:pr-10' : ''}`}
+          input-sm lg:input-md w-full text-base-content \
+          ${getRoundedClass(rounded)} \
+          ${false ? 'input-error' : ''}
+          ${prefix ? 'pl-10 lg:pl-10' : ''} \
+          ${suffix || type === 'password' ? 'pr-10 lg:pr-10' : ''}`}
         type={showPwd ? 'text' : type}
         disabled={disabled}
         value={value || val}
@@ -33,6 +40,7 @@ export const Input: FC<IInputProps> = ({
           setVal(inputValue)
           onChange?.(inputValue)
         }}
+        onKeyDown={(e) => onKeydown?.(e)}
         placeholder={placeholder}
       />
       {prefix ? (

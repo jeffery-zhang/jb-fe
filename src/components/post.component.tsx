@@ -9,9 +9,9 @@ import {
   getRoundedClass,
 } from '@/shared/stores/settings.store'
 import { Img } from '@/components/image.component'
-import { IPost } from '@/shared/interfaces/post.interface'
+import { TPostRecordsData } from '@/shared/interfaces/post.interface'
 
-export const Post: FC<Omit<IPost, 'content'>> = ({
+export const Post: FC<TPostRecordsData> = ({
   _id,
   title,
   intro,

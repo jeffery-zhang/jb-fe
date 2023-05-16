@@ -1,7 +1,7 @@
 import { ISearch } from './fetcher.interface'
 
 export interface ISearchPosts extends ISearch {
-  userId?: string
+  author?: string
   category?: string
   tags?: string
   sortBy?: Sorter
@@ -28,3 +28,5 @@ export interface IPost extends ISavePost {
   createTime: string
   updateTime: string
 }
+
+export type TPostRecordsData = Omit<IPost, 'content'>

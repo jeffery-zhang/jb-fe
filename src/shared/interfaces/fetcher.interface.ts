@@ -1,6 +1,5 @@
 export interface ISearch {
   keywords?: string
-  keywordsKeys?: string[]
   sortBy?: string
   order?: 'desc' | 'asc'
   page?: number

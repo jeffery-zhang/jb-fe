@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react'
-import { throttle } from 'lodash'
 
 import {
   useSettingsStore,
@@ -26,21 +25,20 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
       last,
     ]
   }, [page, pageSize, total])
-  const onChangeWithThrottle = throttle(onChange, 1000)
 
   return (
     <div className='flex justify-end items-center gap-x-2'>
       <button
         className={`btn btn-ghost ${getRoundedClass(rounded)}`}
         disabled={page === 1}
-        onClick={() => onChangeWithThrottle(page - 1, pageSize)}
+        onClick={() => onChange(page - 1, pageSize)}
       >
         {'<'}
       </button>
       {pages[0] > 1 && (
         <button
           className={`btn btn-ghost ${getRoundedClass(rounded)}`}
-          onClick={() => onChangeWithThrottle(page - 4, pageSize)}
+          onClick={() => onChange(page - 4, pageSize)}
         >
           ...
         </button>
@@ -50,7 +48,7 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
           key={number}
           className={`btn btn-ghost ${getRoundedClass(rounded)}`}
           disabled={page === number}
-          onClick={() => onChangeWithThrottle(number, pageSize)}
+          onClick={() => onChange(number, pageSize)}
         >
           {number}
         </button>
@@ -58,7 +56,7 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
       {pages[pages.length - 1] < allPages && (
         <button
           className={`btn btn-ghost ${getRoundedClass(rounded)}`}
-          onClick={() => onChangeWithThrottle(page + 4, pageSize)}
+          onClick={() => onChange(page + 4, pageSize)}
         >
           ...
         </button>
@@ -66,7 +64,7 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
       <button
         className={`btn btn-ghost ${getRoundedClass(rounded)}`}
         disabled={page === allPages}
-        onClick={() => onChangeWithThrottle(page + 1, pageSize)}
+        onClick={() => onChange(page + 1, pageSize)}
       >
         {'>'}
       </button>

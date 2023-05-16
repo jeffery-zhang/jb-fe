@@ -43,7 +43,6 @@ export const useSettingsStore = create<IDrawerStore>((set, get) => ({
   show: () => set({ visible: true }),
   hide: () => set({ visible: false }),
   setTheme: (theme) => {
-    console.log('set theme: ', theme)
     if (get().theme === theme) return
     // setLocalStorage('theme', theme)
     if (typeof window !== 'undefined') {
@@ -52,13 +51,11 @@ export const useSettingsStore = create<IDrawerStore>((set, get) => ({
     set({ theme })
   },
   setBanner: (banner) => {
-    console.log('set banner: ', banner)
     if (get().banner === banner) return
     // setLocalStorage('banner', banner)
     set({ banner })
   },
   setRounded: (rounded) => {
-    console.log('set rounded: ', rounded)
     if (get().rounded === rounded) return
     // setLocalStorage('rounded', rounded)
     set({ rounded })

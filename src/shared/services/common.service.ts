@@ -1,7 +1,5 @@
 import { fetcher } from '../utils/fetcher'
-import {
-  IResponse,
-} from '../interfaces/fetcher.interface'
+import { IResponse } from '../interfaces/fetcher.interface'
 
 interface IUploadData {
   file: File
@@ -22,8 +20,14 @@ export const uploadFile = async (
 
 export const uploadPoster = async (
   data: IUploadData,
-): Promise<IResponse<string>> => fetcher.post(path.uploadPoster, data)
+): Promise<IResponse<string>> =>
+  fetcher.post(path.uploadPoster, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 
 export const uploadContentImg = async (
   data: IUploadData,
-): Promise<IResponse<string>> => fetcher.post(path.uploadContentImg, data)
+): Promise<IResponse<string>> =>
+  fetcher.post(path.uploadContentImg, data, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })

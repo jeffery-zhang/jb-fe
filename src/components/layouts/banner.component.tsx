@@ -10,7 +10,6 @@ export const Banner: FC = () => {
   const { data = [] } = useSWR(path.allBanners, async () => {
     const { success, data } = await getBanners()
     if (success) {
-      console.log(data)
       return data
     }
   })

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { shallow } from 'zustand/shallow'
+import { throttle } from 'lodash'
 
 import { BasicLayout } from '@/layouts/basic.layout'
 import { Post } from '@/components/post.component'
 import { search } from '@/shared/services/posts.service'
-import { usePagerStore } from '@/shared/stores/pager.store'
+import { usePostsStore, useSearchStore } from '@/shared/stores/posts.store'
 import { IPost } from '@/shared/interfaces/post.interface'
 import { IRecords } from '@/shared/interfaces/fetcher.interface'
 import { Pager } from '@/components/pager.component'
@@ -23,26 +24,32 @@ export async function getStaticProps() {
 }
 
 export default function Home(props: IRecords<IPost>) {
-  const { page, pageSize, total, setPage, setPageSize, setTotal } =
-    usePagerStore((state) => state, shallow)
-  const [records, setRecords] = useState<Omit<IPost, 'content'>[]>([])
+  const { total, records, setTotal, setRecords } = usePostsStore(
+    (state) => state,
+    shallow,
+  )
+  const searchState = useSearchStore((state) => state, shallow)
 
-  const onPageChange = async (page: number, pageSize: number) => {
-    const { success, data } = await search({ page, pageSize })
+  const onSearchWithThrottle = throttle(async (page, pageSize = 10) => {
+    const { success, data } = await search({
+      ...searchState,
+      page,
+      pageSize,
+    })
     if (success) {
-      setPage(data.page)
-      setPageSize(data.pageSize)
+      searchState.setPage(data.page)
+      searchState.setPageSize(data.pageSize)
       setTotal(data.total)
       setRecords(data.records)
     }
-  }
+  }, 1000)
 
   useEffect(() => {
-    setPage(props.page)
-    setPageSize(props.pageSize)
+    searchState.setPage(props.page)
+    searchState.setPageSize(props.pageSize)
     setTotal(props.total)
     setRecords(props.records)
-  }, [props])
+  }, [])
 
   return (
     <BasicLayout banner showCreate>
@@ -52,10 +59,10 @@ export default function Home(props: IRecords<IPost>) {
             <Post key={post._id} {...post} />
           ))}
           <Pager
-            page={page}
-            pageSize={pageSize}
+            page={searchState.page}
+            pageSize={searchState.pageSize}
             total={total}
-            onChange={onPageChange}
+            onChange={onSearchWithThrottle}
           />
         </div>
       </div>

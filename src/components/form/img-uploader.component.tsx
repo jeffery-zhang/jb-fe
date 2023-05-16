@@ -16,6 +16,7 @@ export const ImagUploader: FC<IImagUploaderProps> = ({
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
       const file = e.target.files[0]
+      console.log(file)
       const available = beforeUpload(file)
       available && onUpload(file)
     }
@@ -54,7 +55,7 @@ export const ImagUploader: FC<IImagUploaderProps> = ({
               className='object-cover'
             />,
             <div
-              className='flex justify-around items-center absolute left-0 top-0 \
+              className='flex justify-around items-center absolute left-0 top-0 z-10 \
                 w-full h-full transition-all duration-300 ease-in-out \
                 bg-base-content opacity-100 lg:bg-transparent lg:opacity-0 \
                 hover:opacity-100 hover:bg-base-content bg-opacity-30 hover:bg-opacity-30'

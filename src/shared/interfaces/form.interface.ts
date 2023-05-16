@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, KeyboardEventHandler } from 'react'
 
 export interface IFormFieldProps {
   className?: string
@@ -12,6 +12,7 @@ export interface IInputProps extends IFormFieldProps {
   prefix?: ReactNode | null
   suffix?: ReactNode | null
   type?: 'text' | 'password'
+  onKeydown?: KeyboardEventHandler
 }
 
 export interface ISelectProps extends IFormFieldProps {

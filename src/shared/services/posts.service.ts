@@ -4,7 +4,12 @@ import {
   IResponseRecords,
   IActionResponse,
 } from '../interfaces/fetcher.interface'
-import { ISearchPosts, ISavePost, IPost } from '../interfaces/post.interface'
+import {
+  ISearchPosts,
+  ISavePost,
+  IPost,
+  TPostRecordsData,
+} from '../interfaces/post.interface'
 
 export const path = {
   base: '/posts',
@@ -15,7 +20,7 @@ export const path = {
 
 export const search = async (
   params: ISearchPosts,
-): Promise<IResponseRecords<Omit<IPost, 'content'>>> =>
+): Promise<IResponseRecords<TPostRecordsData>> =>
   fetcher.get(path.base, {
     params,
   })
@@ -30,7 +35,10 @@ export const viewOne = async (id: string): Promise<IResponse<IPost>> =>
   fetcher.get(`${path.viewOne}/${id}`)
 
 export const create = async (data: ISavePost): Promise<IActionResponse> =>
-  fetcher.post(path.save, data)
+  fetcher.post(path.save, {
+    ...data,
+    isPublic: true,
+  })
 
 export const update = async (
   id: string,
@@ -38,6 +46,7 @@ export const update = async (
 ): Promise<IActionResponse> =>
   fetcher.put(path.save, {
     ...data,
+    isPublic: true,
     id,
   })
 

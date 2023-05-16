@@ -16,7 +16,7 @@ export const Select: FC<ISelectProps> = ({
     <div className={`relative ${className}`}>
       <select
         className={`select select-bordered select-primary \
-            select-sm lg:select-md w-full`}
+          select-sm lg:select-md w-full text-base-content`}
         onChange={(e) => {
           const val = e.target.value
           setVal(val)
