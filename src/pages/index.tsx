@@ -3,15 +3,17 @@ import { shallow } from 'zustand/shallow'
 import { throttle } from 'lodash'
 
 import { BasicLayout } from '@/layouts/basic.layout'
+import { fetcher } from '@/shared/utils/fetcher'
 import { Post } from '@/components/post.component'
-import { search } from '@/shared/services/posts.service'
+import { search, path } from '@/shared/services/posts.service'
 import { usePostsStore, useSearchStore } from '@/shared/stores/posts.store'
 import { IPost } from '@/shared/interfaces/post.interface'
 import { IRecords } from '@/shared/interfaces/fetcher.interface'
 import { Pager } from '@/components/pager.component'
 
 export async function getStaticProps() {
-  const { data } = await search({ pageSize: 10 })
+  const data: any = await fetcher(`${process.env.SERVER_URL}${path.base}`)
+  console.log(data)
 
   return {
     props: {

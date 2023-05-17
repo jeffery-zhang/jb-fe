@@ -1,7 +1,8 @@
 import { Viewer } from '@bytemd/react'
 import dayjs from 'dayjs'
 
-import { getAllIds, viewOne } from '@/shared/services/posts.service'
+import { fetcher } from '@/shared/utils/fetcher'
+import { getAllIds, viewOne, path } from '@/shared/services/posts.service'
 import { IPost } from '@/shared/interfaces/post.interface'
 import { BasicLayout } from '@/layouts/basic.layout'
 import { Img } from '@/components/image.component'
@@ -10,19 +11,22 @@ import {
   getRoundedClass,
 } from '@/shared/stores/settings.store'
 
-export const getStaticPaths = async () => {
+export async function getStaticPaths() {
   const paths: { params: { postId: string } }[] = []
-  const { data, success } = await getAllIds()
+  const { data, success }: any = await fetcher(
+    `${process.env.SERVER_URL}${path.ids}`,
+  )
+  console.log(data)
   if (success) {
     paths.push(...data.map(({ _id }) => ({ params: { postId: _id } })))
   }
   return {
-    paths,
-    fallback: 'blocking',
+    paths: [],
+    fallback: false,
   }
 }
 
-export const getStaticProps = async ({ params }) => {
+export async function getStaticProps({ params }) {
   const { data, success } = await viewOne(params.postId)
   if (success) {
     return {
@@ -34,7 +38,7 @@ export const getStaticProps = async ({ params }) => {
   }
 }
 
-export default function Detail(props: IPost) {
+export default function Detail(props: IPost = {} as IPost) {
   const rounded = useSettingsStore((state) => state.rounded)
 
   return (
