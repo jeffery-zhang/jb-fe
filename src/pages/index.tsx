@@ -12,13 +12,12 @@ import { IRecords } from '@/shared/interfaces/fetcher.interface'
 import { Pager } from '@/components/pager.component'
 
 export async function getStaticProps() {
-  const data: any = await fetcher(`${process.env.SERVER_URL}${path.base}`)
-  console.log(data)
+  const { data }: any = await fetcher(`${process.env.SERVER_URL}${path.base}`)
 
   return {
     props: {
-      page: data.page ?? 0,
-      pageSize: data.pageSize ?? 0,
+      page: data.page ?? 1,
+      pageSize: data.pageSize ?? 10,
       total: data.total ?? 0,
       records: data.records ?? [],
     },

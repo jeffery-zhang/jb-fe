@@ -16,12 +16,11 @@ export async function getStaticPaths() {
   const { data, success }: any = await fetcher(
     `${process.env.SERVER_URL}${path.ids}`,
   )
-  console.log(data)
   if (success) {
     paths.push(...data.map(({ _id }) => ({ params: { postId: _id } })))
   }
   return {
-    paths: [],
+    paths,
     fallback: false,
   }
 }

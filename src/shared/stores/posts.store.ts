@@ -1,12 +1,7 @@
 import { create } from 'zustand'
 
-import {
-  IPost,
-  ISearchPosts,
-  TPostRecordsData,
-} from '../interfaces/post.interface'
+import { ISearchPosts, TPostRecordsData } from '../interfaces/post.interface'
 import { search } from '../services/posts.service'
-import { IResponseRecords } from '../interfaces/fetcher.interface'
 
 interface IPostsStore {
   total: number
@@ -45,7 +40,7 @@ export const usePostsStore = create<IPostsStore>((set) => ({
 }))
 
 export const useSearchStore = create<ISearchStore>((set) => ({
-  page: 0,
+  page: 1,
   pageSize: 10,
   keywords: '',
   author: '',
