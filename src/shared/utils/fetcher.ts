@@ -2,10 +2,12 @@ import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { message } from 'antd'
 import { IResponse } from '../interfaces/fetcher.interface'
 
-const clientUrl = process.env.CLIENT_URL || process.env.NEXT_PUBLIC_CLIENT_URL
+const serverSideUrl = process.env.SERVER_URL
+const clientSideUrl =
+  process.env.CLIENT_URL || process.env.NEXT_PUBLIC_CLIENT_URL
 
 const fetcher = axios.create({
-  baseURL: clientUrl || '',
+  baseURL: serverSideUrl,
   timeout: 30000,
   withCredentials: true,
   headers: {
@@ -16,10 +18,13 @@ const fetcher = axios.create({
 
 const requestInterceptor = (config: InternalAxiosRequestConfig) => {
   if (typeof window !== 'undefined') {
+    config.baseURL = clientSideUrl
     const token = window.localStorage.getItem('token')
     token &&
       config.headers &&
       (config.headers.Authorization = `Bearer ${token}`)
+  } else {
+    config.baseURL = serverSideUrl
   }
 
   return config

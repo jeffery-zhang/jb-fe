@@ -11,22 +11,9 @@ import {
   getRoundedClass,
 } from '@/shared/stores/settings.store'
 
-export async function getStaticPaths() {
-  const paths: { params: { postId: string } }[] = []
-  const { data, success }: any = await fetcher(
-    `${process.env.SERVER_URL}${path.ids}`,
-  )
-  if (success) {
-    paths.push(...data.map(({ _id }) => ({ params: { postId: _id } })))
-  }
-  return {
-    paths,
-    fallback: false,
-  }
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const { data, success } = await viewOne(params.postId)
+  console.log(data)
   if (success) {
     return {
       props: data,
@@ -37,7 +24,7 @@ export async function getStaticProps({ params }) {
   }
 }
 
-export default function Detail(props: IPost = {} as IPost) {
+export default function Detail(props: IPost) {
   const rounded = useSettingsStore((state) => state.rounded)
 
   return (

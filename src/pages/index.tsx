@@ -11,7 +11,7 @@ import { IPost } from '@/shared/interfaces/post.interface'
 import { IRecords } from '@/shared/interfaces/fetcher.interface'
 import { Pager } from '@/components/pager.component'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const { data }: any = await fetcher(`${process.env.SERVER_URL}${path.base}`)
 
   return {
