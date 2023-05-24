@@ -5,7 +5,3 @@ npm-debug.log
 npm-cache
 yarn-cache
 yarn-error.log
-.env
-.env.production
-.env.test
-.env.development
