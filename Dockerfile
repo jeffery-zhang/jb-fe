@@ -1,7 +1,7 @@
 # base
 FROM node:18-alpine AS base
 
-RUN npm i -g pnpm && npm i -g next
+RUN npm i -g pnpm
 
 # dependencies
 FROM base AS dependencies
