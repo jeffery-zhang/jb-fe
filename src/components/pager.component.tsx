@@ -16,9 +16,9 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
   const rounded = useSettingsStore((state) => state.rounded)
   const allPages = useMemo(() => Math.ceil(total / pageSize), [pageSize, total])
   const pages: number[] = useMemo(() => {
+    if (allPages <= 1) return []
     const first = Math.max(1, Math.min(page - 3, allPages - 6))
     const last = Math.min(allPages, Math.max(page + 3, 7))
-    if (first === last) return [1]
     return [
       first,
       ...Array.from({ length: last - first - 1 }, (_, i) => i + first + 1),
@@ -26,7 +26,7 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
     ]
   }, [page, pageSize, total])
 
-  return (
+  return allPages > 1 ? (
     <div className='flex justify-end items-center gap-x-2'>
       <button
         className={`btn btn-ghost ${getRoundedClass(rounded)}`}
@@ -69,5 +69,5 @@ export const Pager: FC<IProps> = ({ page, pageSize, total, onChange }) => {
         {'>'}
       </button>
     </div>
-  )
+  ) : null
 }
