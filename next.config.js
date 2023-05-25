@@ -13,7 +13,7 @@ module.exports = () => {
     reactStrictMode: true,
     rewrites,
     images: {
-      domains: ['139.84.171.31'],
+      domains: ['minio.zhj13.com', '139.84.171.31'],
       loader: 'default',
     },
   }
