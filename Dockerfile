@@ -22,7 +22,8 @@ RUN pnpm prune --prod
 FROM base AS production
 
 WORKDIR /jblog-frontend
-COPY --from=build /jblog-frontend/dist ./dist
-COPY --from=build /jblog-frontend/node_modules ./node_modules
+COPY --from=build /jblog-frontend/.next ./.next
+COPY --from=dependencies /jblog-frontend/node_modules ./node_modules
+COPY package.json ./
 
 CMD [ "npm", "start" ]
