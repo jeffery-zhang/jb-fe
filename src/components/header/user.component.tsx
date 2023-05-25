@@ -56,11 +56,11 @@ export const UserMenu: FC<{ className?: string }> = ({ className }) => {
             rounded,
           )}`}
         >
-          <li>
+          {/* <li>
             <a>我的发布</a>
-          </li>
+          </li> */}
           <li>
-            <a onClick={showDrawer}>全局设置</a>
+            <a onClick={showDrawer}>偏好设置</a>
           </li>
           <li>
             <a onClick={logout}>退出登录</a>
