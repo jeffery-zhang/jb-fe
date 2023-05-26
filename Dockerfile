@@ -23,6 +23,7 @@ FROM base AS production
 
 WORKDIR /jblog-frontend
 COPY --from=build /jblog-frontend/.next ./.next
+COPY --from=build /jblog-frontend/next.config.js ./
 COPY --from=dependencies /jblog-frontend/node_modules ./node_modules
 COPY package.json ./
 
