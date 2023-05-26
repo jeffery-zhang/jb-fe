@@ -14,13 +14,10 @@ export const Img: FC<IProps> = ({ src, shouldRender = true, ...rest }) => {
     }
     return true
   }
-  const loaderProp = ({ src }) => src
 
   const imgSrc = useMemo(() => {
     return validateSrc() ? src : LoadImgFailed
   }, [src])
 
-  return shouldRender || validateSrc() ? (
-    <Image src={imgSrc} loader={loaderProp} {...rest} />
-  ) : null
+  return shouldRender || validateSrc() ? <Image src={imgSrc} {...rest} /> : null
 }
