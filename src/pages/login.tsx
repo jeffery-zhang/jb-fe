@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { Form } from 'antd'
+import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { Form } from 'antd'
 import UserCircleIcon from '@heroicons/react/24/outline/UserCircleIcon'
 import LockClosedIcon from '@heroicons/react/24/outline/LockClosedIcon'
 
@@ -47,51 +48,56 @@ export default function Login() {
   }
 
   return (
-    <BasicLayout>
-      <div className='w-full h-full flex justify-center items-center'>
-        <div
-          className={`w-full md:max-w-md 2xl:max-w-2xl mx-4 px-6 md:px-24 2xl:px-36 py-12 bg-base-100 shadow-lg \
+    <>
+      <Head>
+        <title>登录 Jblog</title>
+      </Head>
+      <BasicLayout>
+        <div className='w-full h-full flex justify-center items-center'>
+          <div
+            className={`w-full md:max-w-md 2xl:max-w-2xl mx-4 px-6 md:px-24 2xl:px-36 py-12 bg-base-100 shadow-lg \
           transition-all duration-1000 ease-in-out \
           ${inited ? 'translate-y-0 opacity-1' : 'translate-y-2/4 opacity-0'} \
           ${getRoundedClass(rounded)}`}
-        >
-          <Form form={form} name='LoginForm'>
-            <Form.Item className='mb-8 lg:mb-10'>
-              <Logo className='text-center' />
-            </Form.Item>
-            <Form.Item
-              className='mb-8 lg:mb-10'
-              name='username'
-              rules={[{ required: true, message: '请输入用户名' }]}
-            >
-              <Input
-                placeholder='请输入用户名'
-                prefix={<UserCircleIcon className='w-5' />}
-              />
-            </Form.Item>
-            <Form.Item
-              className='mb-8 lg:mb-10'
-              name='password'
-              rules={[{ required: true, message: '请输入密码' }]}
-            >
-              <Input
-                placeholder='请输入密码'
-                type='password'
-                prefix={<LockClosedIcon className='w-5' />}
-              />
-            </Form.Item>
-            <Form.Item className='mb-8 lg:mb-10'>
-              <button
-                className={`btn btn-primary btn-block btn-md 2xl:btn-lg \
-                ${loading ? 'loading' : ''}`}
-                onClick={handleLogin}
+          >
+            <Form form={form} name='LoginForm'>
+              <Form.Item className='mb-8 lg:mb-10'>
+                <Logo className='text-center' />
+              </Form.Item>
+              <Form.Item
+                className='mb-8 lg:mb-10'
+                name='username'
+                rules={[{ required: true, message: '请输入用户名' }]}
               >
-                登录
-              </button>
-            </Form.Item>
-          </Form>
+                <Input
+                  placeholder='请输入用户名'
+                  prefix={<UserCircleIcon className='w-5' />}
+                />
+              </Form.Item>
+              <Form.Item
+                className='mb-8 lg:mb-10'
+                name='password'
+                rules={[{ required: true, message: '请输入密码' }]}
+              >
+                <Input
+                  placeholder='请输入密码'
+                  type='password'
+                  prefix={<LockClosedIcon className='w-5' />}
+                />
+              </Form.Item>
+              <Form.Item className='mb-8 lg:mb-10'>
+                <button
+                  className={`btn btn-primary btn-block btn-md 2xl:btn-lg \
+                ${loading ? 'loading' : ''}`}
+                  onClick={handleLogin}
+                >
+                  登录
+                </button>
+              </Form.Item>
+            </Form>
+          </div>
         </div>
-      </div>
-    </BasicLayout>
+      </BasicLayout>
+    </>
   )
 }

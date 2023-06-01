@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import Head from 'next/head'
 import { shallow } from 'zustand/shallow'
 import { throttle } from 'lodash'
 
@@ -53,20 +54,25 @@ export default function Home(props: IRecords<IPost>) {
   }, [])
 
   return (
-    <BasicLayout banner showCreate>
-      <div className='container mx-auto pt-48 pb-40 relative z-10'>
-        <div className='flex flex-col max-w-full lg:w-3/5 gap-y-6'>
-          {records.map((post) => (
-            <Post key={post._id} {...post} />
-          ))}
-          <Pager
-            page={searchState.page}
-            pageSize={searchState.pageSize}
-            total={total}
-            onChange={onSearchWithThrottle}
-          />
+    <>
+      <Head>
+        <title>JBlog</title>
+      </Head>
+      <BasicLayout banner showCreate>
+        <div className='container mx-auto pt-48 pb-40 relative z-10'>
+          <div className='flex flex-col max-w-full lg:w-3/5 gap-y-6'>
+            {records.map((post) => (
+              <Post key={post._id} {...post} />
+            ))}
+            <Pager
+              page={searchState.page}
+              pageSize={searchState.pageSize}
+              total={total}
+              onChange={onSearchWithThrottle}
+            />
+          </div>
         </div>
-      </div>
-    </BasicLayout>
+      </BasicLayout>
+    </>
   )
 }
