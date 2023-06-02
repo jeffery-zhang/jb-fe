@@ -19,7 +19,7 @@ export const Banner: FC = () => {
       {data.map(({ name, bannerUrl }) => (
         <Img
           className={`w-full h-full object-cover ${
-            banner === name ? 'block' : 'hidden'
+            (banner ? banner : data[0]?.name) === name ? 'block' : 'hidden'
           }`}
           key={name}
           src={bannerUrl}

@@ -53,7 +53,7 @@ export const Post: FC<TPostRecordsData> = ({
           >
             {title}
           </h1>
-          <div className='flex flex-col gap-6 py-6 text-base-300'>
+          <div className='flex flex-col gap-6 py-6 text-primary-content'>
             <span className='text-sm'>{username}</span>
             <span className='text-sm'>
               {dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
@@ -65,7 +65,7 @@ export const Post: FC<TPostRecordsData> = ({
       <div className='p-4 text-center text-md truncate mx-12 lg:mx-0'>
         {intro}
       </div>
-      {user && user?.username === username && (
+      {user && user.username === username && (
         <div
           className='absolute bottom-5 right-5 w-8 h-8 text-primary cursor-pointer'
           onClick={() => router.push(`/post/edit/${_id}`)}
@@ -73,7 +73,7 @@ export const Post: FC<TPostRecordsData> = ({
           <PencilSquareIcon />
         </div>
       )}
-      <div className='flex justify-between items-center absolute bottom-5 left-5 w-8 h-6 text-secondary-focus'>
+      <div className='flex justify-between items-center absolute bottom-5 left-5 w-8 h-6 text-primary'>
         <EyeIcon className='w-5' />
         <span>{pv}</span>
       </div>

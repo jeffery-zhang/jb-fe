@@ -38,7 +38,7 @@ export const getRoundedClass = (rounded: ISetting['rounded']) => {
 export const useSettingsStore = create<IDrawerStore>((set, get) => ({
   visible: false,
   theme: 'light',
-  banner: 'Lake',
+  banner: '',
   rounded: 2,
   show: () => set({ visible: true }),
   hide: () => set({ visible: false }),

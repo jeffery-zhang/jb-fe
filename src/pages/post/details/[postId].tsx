@@ -1,9 +1,9 @@
 import { Viewer } from '@bytemd/react'
 import Head from 'next/head'
 import dayjs from 'dayjs'
+import { EyeIcon } from '@heroicons/react/24/outline'
 
-import { fetcher } from '@/shared/utils/fetcher'
-import { getAllIds, viewOne, path } from '@/shared/services/posts.service'
+import { viewOne } from '@/shared/services/posts.service'
 import { IPost } from '@/shared/interfaces/post.interface'
 import { BasicLayout } from '@/layouts/basic.layout'
 import { Img } from '@/components/image.component'
@@ -53,6 +53,10 @@ export default function Detail(props: IPost) {
               <h1 className='text-center py-6 border-b border-base-200'>
                 {props.title}
               </h1>
+              <div className='flex justify-end items-center'>
+                <EyeIcon className='w-6 h-6 mr-2' />
+                {props.pv}
+              </div>
               <blockquote>作者: {props.username}</blockquote>
               <blockquote>
                 发布时间:{' '}
