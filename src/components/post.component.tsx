@@ -19,6 +19,7 @@ export const Post: FC<TPostRecordsData> = ({
   pv,
   category,
   username,
+  createTime,
   updateTime,
 }) => {
   const user = useUserStore((state) => state.user)
@@ -56,7 +57,7 @@ export const Post: FC<TPostRecordsData> = ({
           <div className='flex flex-col gap-6 py-6 text-primary-content'>
             <span className='text-sm'>{username}</span>
             <span className='text-sm'>
-              {dayjs(updateTime).format('YYYY-MM-DD HH:mm:ss')}
+              {dayjs(createTime).format('YYYY-MM-DD HH:mm:ss')}
             </span>
             <span>{category}</span>
           </div>

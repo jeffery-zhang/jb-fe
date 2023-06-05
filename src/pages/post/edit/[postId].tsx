@@ -26,16 +26,28 @@ export default function EditPost() {
     }
     return []
   })
-
-  const getPostDetail = async () => {
-    const { data, success } = await getOne(router.query.postId as string)
-    if (success) {
-      formRef.setFieldsValue({
-        ...data,
-        tagNames: data.tags.join(','),
-      })
-    }
-  }
+  useSWR(
+    router.query.postId ? `${path.base}/${router.query.postId}` : null,
+    async () => {
+      const id = router.query.postId
+      if (id) {
+        if (id === 'create') {
+          if (typeof window !== 'undefined') {
+            const cachedForm = window.localStorage.getItem('cachedForm')
+            if (cachedForm) formRef.setFieldsValue(JSON.parse(cachedForm))
+          }
+        } else {
+          const { data, success } = await getOne(id as string)
+          if (success) {
+            formRef.setFieldsValue({
+              ...data,
+              tagNames: data.tags.join(','),
+            })
+          }
+        }
+      }
+    },
+  )
 
   const onCached = () => {
     const cachedForm = formRef.getFieldsValue()
@@ -71,19 +83,6 @@ export default function EditPost() {
       }
     }
   }
-
-  useEffect(() => {
-    if (router.query.postId) {
-      if (router.query.postId === 'create') {
-        if (typeof window !== 'undefined') {
-          const cachedForm = window.localStorage.getItem('cachedForm')
-          cachedForm && formRef.setFieldsValue(cachedForm)
-        }
-      } else {
-        getPostDetail()
-      }
-    }
-  }, [router.query.postId])
 
   return (
     <>

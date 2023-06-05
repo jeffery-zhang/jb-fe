@@ -9,6 +9,7 @@ import {
   ISavePost,
   IPost,
   TPostRecordsData,
+  TSiblingsTwoData,
 } from '../interfaces/post.interface'
 
 export const path = {
@@ -16,6 +17,7 @@ export const path = {
   ids: '/posts/ids',
   viewOne: '/posts/realView',
   save: '/posts/save',
+  siblingsTwo: '/posts/siblingsTwo',
 }
 
 export const search = async (
@@ -53,12 +55,18 @@ export const update = async (
 export const del = async (id: string): Promise<IActionResponse> =>
   fetcher.delete(`${path.base}/${id}`)
 
+export const siblingsTwo = async (
+  id: string,
+): Promise<IResponse<TSiblingsTwoData>> =>
+  fetcher.get(`${path.siblingsTwo}/${id}`)
+
 const postsService = {
   search,
   getOne,
   create,
   update,
   del,
+  siblingsTwo,
 }
 
 export default postsService

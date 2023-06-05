@@ -14,7 +14,7 @@ export const Tag: FC<IProps> = ({ name }) => {
 
   return (
     <span
-      className={`inline-block px-4 py-1 bg-secondary mr-2 text-xs ${getRoundedClass(
+      className={`inline-block px-4 py-1 bg-secondary text-secondary-content m-1 text-xs ${getRoundedClass(
         rounded,
       )}`}
     >

@@ -30,3 +30,10 @@ export interface IPost extends ISavePost {
 }
 
 export type TPostRecordsData = Omit<IPost, 'content'>
+
+export type TPostWithIdAndTitle = Pick<IPost, '_id' | 'title'>
+
+export type TSiblingsTwoData = {
+  prev?: TPostWithIdAndTitle
+  next?: TPostWithIdAndTitle
+}
